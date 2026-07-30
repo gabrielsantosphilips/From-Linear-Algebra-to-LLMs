@@ -64,21 +64,21 @@ $\blacksquare$
 
 **Definition 2.5 (Column space, null space, rank).** For
 $\mathbf{A}\in\mathbb{R}^{m\times n}$:
-- $\operatorname{Col}(\mathbf{A})=\{\mathbf{A}\mathbf{x}:\mathbf{x}\in\mathbb{R}^n\}\subseteq\mathbb{R}^m$.
-- $\operatorname{Null}(\mathbf{A})=\{\mathbf{x}\in\mathbb{R}^n:\mathbf{A}\mathbf{x}=\mathbf{0}\}$.
-- $\operatorname{rank}(\mathbf{A})=\dim\operatorname{Col}(\mathbf{A})$.
+- $\mathrm{Col}(\mathbf{A})=\{\mathbf{A}\mathbf{x}:\mathbf{x}\in\mathbb{R}^n\}\subseteq\mathbb{R}^m$.
+- $\mathrm{Null}(\mathbf{A})=\{\mathbf{x}\in\mathbb{R}^n:\mathbf{A}\mathbf{x}=\mathbf{0}\}$.
+- $\mathrm{rank}(\mathbf{A})=\dim\mathrm{Col}(\mathbf{A})$.
 
 **Theorem 2.6 (Rank–nullity).** If $\mathbf{A}\in\mathbb{R}^{m\times n}$, then
 
 $$
-\dim\operatorname{Null}(\mathbf{A})+\operatorname{rank}(\mathbf{A})=n.
+\dim\mathrm{Null}(\mathbf{A})+\mathrm{rank}(\mathbf{A})=n.
 $$
 
 **Proof sketch.** Row-reduce $\mathbf{A}$ to RREF. Let $r$ be the number of pivot
-columns. Then $r=\operatorname{rank}(\mathbf{A})$. There are $n-r$ free variables
+columns. Then $r=\mathrm{rank}(\mathbf{A})$. There are $n-r$ free variables
 in solutions of $\mathbf{A}\mathbf{x}=\mathbf{0}$, producing a basis of
-$\operatorname{Null}(\mathbf{A})$ with $n-r$ vectors. Hence
-$\dim\operatorname{Null}(\mathbf{A})=n-r$, so the sum is $n$. $\blacksquare$
+$\mathrm{Null}(\mathbf{A})$ with $n-r$ vectors. Hence
+$\dim\mathrm{Null}(\mathbf{A})=n-r$, so the sum is $n$. $\blacksquare$
 
 **Definition 2.7 (Invertibility).** A square matrix
 $\mathbf{A}\in\mathbb{R}^{n\times n}$ is invertible if there exists

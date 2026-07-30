@@ -24,7 +24,7 @@ example used throughout this booklet.
 **Definition 1.2 (Span).** For vectors $\mathbf{v}_1,\dots,\mathbf{v}_k\in V$,
 
 $$
-\operatorname{span}\{\mathbf{v}_1,\dots,\mathbf{v}_k\}=
+\mathrm{span}\{\mathbf{v}_1,\dots,\mathbf{v}_k\}=
 \left\{\sum_{i=1}^k a_i\mathbf{v}_i : a_i\in\mathbb{F}\right\}.
 $$
 

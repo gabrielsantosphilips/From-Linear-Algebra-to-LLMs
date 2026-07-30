@@ -51,7 +51,7 @@ $$
 $$
 
 $$
-\operatorname{LN}(\mathbf{x})_i=\gamma_i\frac{x_i-\mu(\mathbf{x})}{\sqrt{\sigma^2(\mathbf{x})+\epsilon}}+\beta_i.
+\mathrm{LN}(\mathbf{x})_i=\gamma_i\frac{x_i-\mu(\mathbf{x})}{\sqrt{\sigma^2(\mathbf{x})+\epsilon}}+\beta_i.
 $$
 
 **Proposition 13.2 (Shift/scale invariance of normalized core).** Define

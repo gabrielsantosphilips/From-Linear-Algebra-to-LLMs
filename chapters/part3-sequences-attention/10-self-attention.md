@@ -15,8 +15,8 @@ $$
 and
 
 $$
-\operatorname{Attn}(\mathbf{X})=
-\operatorname{softmax}\!\left(\frac{\mathbf{Q}\mathbf{K}^\top}{\sqrt{d_k}}\right)\mathbf{V}.
+\mathrm{Attn}(\mathbf{X})=
+\mathrm{softmax}\!\left(\frac{\mathbf{Q}\mathbf{K}^\top}{\sqrt{d_k}}\right)\mathbf{V}.
 $$
 
 Softmax is row-wise.
@@ -26,7 +26,7 @@ $\mathbf{P}\in\mathbb{R}^{n\times n}$ be a permutation matrix and define
 $\mathbf{X}'=\mathbf{P}\mathbf{X}$. Then
 
 $$
-\operatorname{Attn}(\mathbf{X}')=\mathbf{P}\operatorname{Attn}(\mathbf{X}).
+\mathrm{Attn}(\mathbf{X}')=\mathbf{P}\mathrm{Attn}(\mathbf{X}).
 $$
 
 So reordering tokens reorders outputs in the same way.
@@ -43,13 +43,13 @@ $$
 $$
 
 Row-wise softmax commutes with this simultaneous row/column permutation:
-$\operatorname{softmax}(\mathbf{P}\mathbf{S}\mathbf{P}^\top)=\mathbf{P}\operatorname{softmax}(\mathbf{S})\mathbf{P}^\top$.
+$\mathrm{softmax}(\mathbf{P}\mathbf{S}\mathbf{P}^\top)=\mathbf{P}\mathrm{softmax}(\mathbf{S})\mathbf{P}^\top$.
 Hence
 
 $$
-\operatorname{Attn}(\mathbf{X}')=
-\mathbf{P}\operatorname{softmax}(\mathbf{S})\mathbf{P}^\top\mathbf{P}\mathbf{V}
-=\mathbf{P}\operatorname{Attn}(\mathbf{X}).
+\mathrm{Attn}(\mathbf{X}')=
+\mathbf{P}\mathrm{softmax}(\mathbf{S})\mathbf{P}^\top\mathbf{P}\mathbf{V}
+=\mathbf{P}\mathrm{Attn}(\mathbf{X}).
 $$
 
 $\blacksquare$
@@ -59,15 +59,15 @@ $\mathbf{q},\mathbf{k}\in\mathbb{R}^{d_k}$ are i.i.d., mean $0$, variance $1$,
 and independent across vectors. Then
 
 $$
-\operatorname{Var}(\mathbf{q}\cdot\mathbf{k})=d_k,
+\mathrm{Var}(\mathbf{q}\cdot\mathbf{k})=d_k,
 \qquad
-\operatorname{Var}\!\left(\frac{\mathbf{q}\cdot\mathbf{k}}{\sqrt{d_k}}\right)=1.
+\mathrm{Var}\!\left(\frac{\mathbf{q}\cdot\mathbf{k}}{\sqrt{d_k}}\right)=1.
 $$
 
 **Proof.** $\mathbf{q}\cdot\mathbf{k}=\sum_{i=1}^{d_k} q_i k_i$.
 Each term has mean $0$ and variance
 $\mathbb{E}[q_i^2]\mathbb{E}[k_i^2]=1$. Independence gives variance additivity,
-so $\operatorname{Var}(\sum_i q_i k_i)=d_k$. Dividing by $\sqrt{d_k}$ divides
+so $\mathrm{Var}(\sum_i q_i k_i)=d_k$. Dividing by $\sqrt{d_k}$ divides
 variance by $d_k$, yielding $1$. $\blacksquare$
 
 ---
