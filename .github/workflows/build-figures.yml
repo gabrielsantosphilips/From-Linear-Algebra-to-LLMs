@@ -9,6 +9,9 @@ on:
       - "assets/README.md"
       - ".github/workflows/build-figures.yml"
 
+permissions:
+  contents: read
+
 jobs:
   build-media:
     runs-on: ubuntu-latest
