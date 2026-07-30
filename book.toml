@@ -1,0 +1,16 @@
+[book]
+title = "From Linear Algebra to LLMs"
+authors = ["Gabriel Santos Philips"]
+language = "en"
+multilingual = false
+src = "."
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "navy"
+mathjax-support = true
+git-repository-url = "https://github.com/gabrielsantosphilips/From-Linear-Algebra-to-LLMs"
+additional-js = ["mermaid.min.js", "mermaid-init.js"]
+
+[preprocessor.mermaid]
+command = "mdbook-mermaid"

@@ -1,5 +1,7 @@
 # From Linear Algebra to LLMs
 
+[![Read online](https://img.shields.io/badge/Read%20online-GitHub%20Pages-blue)](https://gabrielsantosphilips.github.io/From-Linear-Algebra-to-LLMs/)
+
 > A self-contained mathematical booklet that builds up, step by step, from
 > vectors and matrices to the inner workings of modern Large Language Models
 > (LLMs), now with formal **definitions, theorems, lemmas, propositions, and
