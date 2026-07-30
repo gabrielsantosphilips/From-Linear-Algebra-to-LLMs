@@ -27,6 +27,18 @@ We now assemble everything from Parts I–III into the full transformer.
      [ softmax → next-token probs ]
 ```
 
+```mermaid
+flowchart TD
+    A[Token IDs] --> B[Embedding lookup]
+    B --> C[Add positional encoding]
+    C --> D[Transformer block x N]
+    D --> E[Final LayerNorm]
+    E --> F[Linear to vocab logits]
+    F --> G[Softmax probabilities]
+```
+
+*Diagram: Decoder-only transformer dataflow.*
+
 ## Layer normalization
 
 **Definition 13.1 (LayerNorm).** For

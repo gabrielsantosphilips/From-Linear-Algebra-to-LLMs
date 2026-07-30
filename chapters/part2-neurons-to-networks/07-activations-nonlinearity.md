@@ -68,6 +68,9 @@ $$
 | $0$  | $0.500$ | $0.000$  | $0$ | $0.000$ |
 | $2$  | $0.881$ | $0.964$  | $2$ | $1.954$ |
 
+![Sigmoid, tanh, ReLU, and GELU curves plotted on the same axes.](../../assets/img/activation-functions.svg)
+*Figure: Activations differ mainly in saturation and slope behavior.*
+
 ## Intuition for LLMs
 
 Modern transformers use GELU/SwiGLU in feed-forward blocks. Proposition 7.1 is

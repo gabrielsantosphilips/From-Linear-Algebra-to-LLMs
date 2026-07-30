@@ -1,0 +1,47 @@
+name: Build figures and animations
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "scripts/**"
+      - "requirements.txt"
+      - "assets/README.md"
+      - ".github/workflows/build-figures.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build-media:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg libcairo2-dev libpango1.0-dev pkg-config
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate static figures
+        run: python scripts/generate_static_figures.py
+
+      - name: Generate GIF animations
+        run: python scripts/anim/generate_gifs.py
+
+      - name: Render manim scenes (best effort)
+        continue-on-error: true
+        run: |
+          manim -qk scripts/anim/gradient_descent_manim.py GradientDescentScene
+          manim -qk scripts/anim/self_attention_manim.py SelfAttentionScene
+          manim -qk scripts/anim/linear_transform_manim.py LinearTransformSVDScene
+          manim -qk scripts/anim/softmax_temperature_manim.py SoftmaxTemperatureScene

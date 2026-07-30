@@ -26,6 +26,38 @@ Read in order the first time — each chapter builds on the previous ones.
 > **Math rendering:** This booklet uses LaTeX (`$...$` inline and `$$...$$`
 > display). GitHub renders these natively in Markdown.
 
+## Figures & animations
+
+Visual assets are versioned in-repo:
+
+- `assets/img/` for static SVG figures
+- `assets/anim/` for animated GIFs
+- `scripts/` for reproducible generation scripts
+
+Regenerate media with:
+
+```bash
+pip install -r requirements.txt
+python scripts/generate_static_figures.py
+python scripts/anim/generate_gifs.py
+```
+
+```mermaid
+flowchart LR
+    A[Vectors] --> B[Matrices]
+    B --> C[Linear maps]
+    C --> D[Nonlinearities]
+    D --> E[Gradient descent]
+    E --> F[Embeddings]
+    F --> G[Attention]
+    G --> H[Transformers]
+    H --> I[Next-token training]
+    I --> J[Sampling and scale]
+    J --> K[LLMs]
+```
+
+*Diagram: The learning journey covered by this booklet.*
+
 ---
 
 ## Table of Contents

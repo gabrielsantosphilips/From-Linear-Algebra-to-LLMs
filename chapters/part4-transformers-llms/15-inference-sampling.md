@@ -59,6 +59,12 @@ $$
 
 More uniform → more random/creative.
 
+![Token probabilities under multiple temperature values for the same logits.](../../assets/img/softmax-temperature.svg)
+*Figure: Sampling distribution sharpens or flattens as temperature changes.*
+
+![Animated temperature sweep of softmax output probabilities.](../../assets/anim/softmax-temperature.gif)
+*Animation: Increasing temperature spreads probability mass across more tokens.*
+
 ## Top-k sampling
 
 Keep only the $k$ highest-probability tokens, renormalize, sample. With $k=2$

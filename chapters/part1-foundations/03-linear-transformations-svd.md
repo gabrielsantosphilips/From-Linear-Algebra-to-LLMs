@@ -211,6 +211,21 @@ $$
 with equality when $\mathbf{y}=\mathbf{e}_1$. So maximizers are top
 eigenvectors. $\blacksquare$
 
+![Two-panel grid before and after a 2x2 linear transformation.](../../assets/img/linear-transform-grid.svg)
+*Figure: A linear map transforms the whole coordinate grid.*
+
+![Eigenvectors before and after transformation remain on the same lines.](../../assets/img/eigenvectors-invariant.svg)
+*Figure: Eigenvectors keep direction, scaling by eigenvalue.*
+
+![Rotate-scale-rotate decomposition of SVD applied to a unit circle.](../../assets/img/svd-rotate-scale-rotate.svg)
+*Figure: SVD as rotate, scale, rotate.*
+
+![Point cloud with principal axes and projection onto the first principal component.](../../assets/img/pca-projection.svg)
+*Figure: PCA projects data onto top-variance direction.*
+
+![Animated shape morph showing linear transformation and SVD intuition.](../../assets/anim/linear-transform-svd.gif)
+*Animation: Grid/circle morph for linear map and SVD geometry.*
+
 ## Intuition for LLMs
 
 PCA rigorously reduces to the spectral theorem; SVD extends the same idea to

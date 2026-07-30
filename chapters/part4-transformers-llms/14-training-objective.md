@@ -43,6 +43,19 @@ guesses) as context. This stabilizes and parallelizes training: every position
 in the sequence is predicted simultaneously, each conditioned on the real prefix
 (with causal masking from [Chapter 10](../part3-sequences-attention/10-self-attention.md)).
 
+```mermaid
+flowchart LR
+    A[Token sequence] --> B[Shifted input tokens]
+    B --> C[Transformer forward pass]
+    C --> D[Vocabulary logits]
+    D --> E[Softmax probabilities]
+    E --> F[Cross-entropy vs true next token]
+    F --> G[Backpropagation]
+    G --> H[Parameter update]
+```
+
+*Diagram: Next-token training loop with teacher forcing.*
+
 ## Tokenization (brief)
 
 Text is split into subword tokens (e.g. Byte-Pair Encoding). “unbelievable”
