@@ -2,48 +2,106 @@
 
 [← Table of Contents](../../README.md)
 
-## Why calculus?
+## Formal definitions
 
-Training means *adjusting weights to reduce loss*. To know **which way** to
-adjust each weight, we need the **gradient** — the vector of partial derivatives
-of the loss with respect to every parameter.
-
-## Derivatives
-
-The derivative measures how a function changes as its input changes:
-
+**Definition 5.1 (Limit and derivative, one variable).**
 $$
-f'(x) = \lim_{h\to 0} \frac{f(x+h)-f(x)}{h}.
+\lim_{x\to a} f(x)=L
+$$
+means: $\forall\varepsilon>0\,\exists\delta>0$ such that
+$0<|x-a|<\delta\Rightarrow |f(x)-L|<\varepsilon$.
+The derivative at $a$ is
+$$
+f'(a)=\lim_{h\to0}\frac{f(a+h)-f(a)}{h}
+$$
+if this limit exists.
+
+**Definition 5.2 (Partial derivative, gradient, Jacobian).**
+For $f:\mathbb{R}^n\to\mathbb{R}$,
+$$
+\frac{\partial f}{\partial x_i}(\mathbf{x})=
+\lim_{h\to0}\frac{f(\mathbf{x}+h\mathbf{e}_i)-f(\mathbf{x})}{h},
+\qquad
+\nabla f(\mathbf{x})=
+\begin{bmatrix}
+\partial f/\partial x_1 \\
+\vdots \\
+\partial f/\partial x_n
+\end{bmatrix}.
+$$
+For $F:\mathbb{R}^n\to\mathbb{R}^m$, the Jacobian is
+$J_F(\mathbf{x})\in\mathbb{R}^{m\times n}$ with
+$(J_F)_{ij}=\partial F_i/\partial x_j$.
+
+**Definition 5.3 (Differentiability / total derivative).**
+$F:\mathbb{R}^n\to\mathbb{R}^m$ is differentiable at $\mathbf{x}$ if there exists
+a linear map $L$ such that
+$$
+\lim_{\mathbf{h}\to\mathbf{0}}
+\frac{\|F(\mathbf{x}+\mathbf{h})-F(\mathbf{x})-L\mathbf{h}\|}{\|\mathbf{h}\|}=0.
+$$
+Then $L=J_F(\mathbf{x})$.
+
+## Chain rule and backpropagation
+
+**Theorem 5.4 (Single-variable chain rule).** If $g$ is differentiable at $x$ and
+$f$ differentiable at $g(x)$, then
+$$
+\frac{d}{dx}f(g(x))=f'(g(x))g'(x).
 $$
 
-Example: $f(x)=x^2 \Rightarrow f'(x)=2x$. At $x=3$, the slope is $6$.
-
-## Partial derivatives & gradient
-
-For $f(x,y)$, the **gradient** collects both partials:
-
+**Proof.** Write
 $$
-\nabla f = \begin{bmatrix} \partial f/\partial x \\ \partial f/\partial y \end{bmatrix}.
+f(g(x+h))-f(g(x))
+=f'(g(x))(g(x+h)-g(x))+r(h),
 $$
-
-Example: $f(x,y) = x^2 + 3xy$.
+where $r(h)/(g(x+h)-g(x))\to 0$. Divide by $h$:
 $$
-\frac{\partial f}{\partial x} = 2x + 3y, \qquad \frac{\partial f}{\partial y} = 3x.
+\frac{f(g(x+h))-f(g(x))}{h}
+=f'(g(x))\frac{g(x+h)-g(x)}{h}+\frac{r(h)}{h}.
 $$
-At $(x,y)=(1,2)$: $\nabla f = \begin{bmatrix} 2+6 \\ 3 \end{bmatrix} = \begin{bmatrix} 8 \\ 3 \end{bmatrix}.$
+As $h\to0$, first term goes to $f'(g(x))g'(x)$ and second to $0$. $\blacksquare$
 
-The gradient points in the direction of **steepest increase**; we step in the
-*opposite* direction to minimize (see [Chapter 8](../part2-neurons-to-networks/08-loss-gradient-descent.md)).
-
-## The chain rule
-
-If $z = f(g(x))$, then
-
+**Theorem 5.5 (Multivariate chain rule).** If
+$F:\mathbb{R}^n\to\mathbb{R}^m$ is differentiable at $\mathbf{x}$ and
+$G:\mathbb{R}^m\to\mathbb{R}^p$ differentiable at $F(\mathbf{x})$, then
 $$
-\frac{dz}{dx} = \frac{dz}{dg}\cdot\frac{dg}{dx}.
+J_{G\circ F}(\mathbf{x})=J_G(F(\mathbf{x}))\,J_F(\mathbf{x}).
 $$
 
-### Worked example
+**Proof sketch.** Compose first-order expansions from Definition 5.3:
+$F(\mathbf{x}+\mathbf{h})=F(\mathbf{x})+J_F\mathbf{h}+o(\|\mathbf{h}\|)$,
+$G(\mathbf{y}+\mathbf{k})=G(\mathbf{y})+J_G\mathbf{k}+o(\|\mathbf{k}\|)$,
+then substitute $\mathbf{k}=J_F\mathbf{h}+o(\|\mathbf{h}\|)$ and collect linear
+terms. $\blacksquare$
+
+**Proposition 5.6 (Backpropagation recurrence).** For a feed-forward network
+$$
+\mathbf{a}^{(\ell)}=\mathbf{W}^{(\ell)}\mathbf{h}^{(\ell-1)}+\mathbf{b}^{(\ell)},
+\quad
+\mathbf{h}^{(\ell)}=\phi^{(\ell)}(\mathbf{a}^{(\ell)}),
+$$
+with scalar loss $L$, define
+$\boldsymbol\delta^{(\ell)}=\partial L/\partial \mathbf{a}^{(\ell)}$. Then
+$$
+\boldsymbol\delta^{(\ell)}=
+\left((\mathbf{W}^{(\ell+1)})^\top\boldsymbol\delta^{(\ell+1)}\right)
+\odot \phi'^{(\ell)}(\mathbf{a}^{(\ell)}),
+$$
+and
+$$
+\frac{\partial L}{\partial \mathbf{W}^{(\ell)}}=
+\boldsymbol\delta^{(\ell)}(\mathbf{h}^{(\ell-1)})^\top,
+\qquad
+\frac{\partial L}{\partial \mathbf{b}^{(\ell)}}=\boldsymbol\delta^{(\ell)}.
+$$
+
+**Proof.** Apply Theorem 5.5 layer-by-layer to
+$L\circ h^{(L)}\circ\cdots\circ h^{(1)}$. The Jacobian of affine map gives
+transpose multiplication by $\mathbf{W}^{(\ell+1)}$, and elementwise nonlinearity
+gives Hadamard product by $\phi'$. $\blacksquare$
+
+## Worked example
 
 Let $g(x) = 2x + 1$ and $f(g) = g^2$, so $z = (2x+1)^2$.
 
@@ -54,25 +112,42 @@ $$
 \frac{dz}{dx} = 2(2x+1)\cdot 2 = 4(2x+1).
 $$
 
-At $x=1$: $\frac{dz}{dx} = 4(3) = 12$. (Check: $z=(2x+1)^2$, $\frac{dz}{dx}=4(2x+1)$ ✓.)
+At $x=1$: $\frac{dz}{dx} = 4(3) = 12$.
 
-## Backpropagation (the big idea)
+## Convexity and optimality
 
-A neural network is a giant composition of functions. **Backpropagation** is
-just the chain rule applied systematically, from the loss backward to every
-weight, reusing intermediate results. Each layer receives the gradient flowing
-back, multiplies by its local derivative, and passes it further back.
-
+**Definition 5.7 (Convex function).** A function
+$f:\mathbb{R}^n\to\mathbb{R}$ is convex if
 $$
-\underbrace{\frac{\partial L}{\partial \mathbf{W}^{(\ell)}}}_{\text{what to update}}
-= \frac{\partial L}{\partial \mathbf{y}} \cdot \frac{\partial \mathbf{y}}{\partial \mathbf{W}^{(\ell)}}
+f(t\mathbf{x}+(1-t)\mathbf{y})\le tf(\mathbf{x})+(1-t)f(\mathbf{y})
+\quad \forall\mathbf{x},\mathbf{y},\ t\in[0,1].
 $$
+
+**Theorem 5.8 (Stationary point of differentiable convex function is global
+minimum).** If $f$ is differentiable and convex, and $\nabla f(\mathbf{x}_\star)=0$,
+then
+$$
+f(\mathbf{x})\ge f(\mathbf{x}_\star)\quad\forall\mathbf{x}.
+$$
+
+**Proof.** Differentiable convex functions satisfy first-order condition:
+$$
+f(\mathbf{y})\ge f(\mathbf{x})+\nabla f(\mathbf{x})^\top(\mathbf{y}-\mathbf{x}).
+$$
+Set $\mathbf{x}=\mathbf{x}_\star$ and use $\nabla f(\mathbf{x}_\star)=0$. $\blacksquare$
+
+**Definition 5.9 (Hessian and second-order conditions).** If $f$ is twice
+ differentiable, Hessian is $\nabla^2 f(\mathbf{x})$.
+- First-order necessary condition for local optimum: $\nabla f(\mathbf{x}_\star)=0$.
+- Second-order sufficient condition for strict local minimum:
+  $\nabla f(\mathbf{x}_\star)=0$ and $\nabla^2 f(\mathbf{x}_\star)\succ 0$.
+- If $\nabla^2 f(\mathbf{x})\succeq 0$ for all $\mathbf{x}$, then $f$ is convex.
 
 ## Intuition for LLMs
 
-Every one of an LLM's billions of parameters is nudged using its gradient,
-computed by backpropagation. Calculus is *how the model learns*. The next parts
-put vectors, matrices, probability, and calculus together into actual networks.
+Backpropagation is just Theorem 5.5 applied repeatedly. This is the rigorous
+bridge from calculus to practical training in
+[Chapter 8](../part2-neurons-to-networks/08-loss-gradient-descent.md).
 
 ---
 

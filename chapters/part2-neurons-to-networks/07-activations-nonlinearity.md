@@ -4,10 +4,31 @@
 
 ## Why nonlinearity?
 
-Stacking linear layers alone is pointless: a composition of linear maps is
-*still linear* ($\mathbf{W}_2(\mathbf{W}_1\mathbf{x}) = (\mathbf{W}_2\mathbf{W}_1)\mathbf{x}$).
-**Nonlinear activation functions** between layers let networks approximate any
-function (the *universal approximation theorem*).
+**Proposition 7.1 (Composition of affine maps is affine).** If
+$f(\mathbf{x})=\mathbf{A}\mathbf{x}+\mathbf{a}$ and
+$g(\mathbf{x})=\mathbf{B}\mathbf{x}+\mathbf{b}$, then
+$$
+(g\circ f)(\mathbf{x})=(\mathbf{B}\mathbf{A})\mathbf{x}+(\mathbf{B}\mathbf{a}+\mathbf{b}),
+$$
+which is affine.
+
+**Proof.** Direct substitution:
+$g(f(\mathbf{x}))=\mathbf{B}(\mathbf{A}\mathbf{x}+\mathbf{a})+\mathbf{b}$.
+$\blacksquare$
+
+Without nonlinearities between layers, a deep network collapses to one affine
+map.
+
+**Theorem 7.2 (Universal Approximation, informal precise statement).** Let
+$\sigma$ be a non-polynomial, continuous activation (e.g. sigmoid). For any
+continuous function $f$ on a compact set $K\subset\mathbb{R}^n$ and any
+$\varepsilon>0$, there exists a one-hidden-layer network
+$$
+N(\mathbf{x})=\sum_{j=1}^m \alpha_j\,\sigma(\mathbf{w}_j^\top\mathbf{x}+b_j)
+$$
+with
+$\sup_{\mathbf{x}\in K}|N(\mathbf{x})-f(\mathbf{x})|<\varepsilon$.
+(Proof omitted; see Cybenko 1989 / Hornik 1991.)
 
 ## The main activation functions
 
@@ -15,25 +36,21 @@ function (the *universal approximation theorem*).
 $$
 \sigma(z) = \frac{1}{1+e^{-z}} \in (0,1)
 $$
-Smooth, squashes to $(0,1)$. Suffers from *vanishing gradients* for large $|z|$.
 
 ### Tanh
 $$
 \tanh(z) = \frac{e^{z}-e^{-z}}{e^{z}+e^{-z}} \in (-1,1)
 $$
-Zero-centered version of sigmoid.
 
 ### ReLU (Rectified Linear Unit)
 $$
 \text{ReLU}(z) = \max(0, z)
 $$
-Cheap, non-saturating for $z>0$; the default in many deep nets.
 
 ### GELU (Gaussian Error Linear Unit)
 $$
 \text{GELU}(z) = z\,\Phi(z) \approx 0.5\,z\left(1+\tanh\!\big[\sqrt{2/\pi}(z+0.044715 z^3)\big]\right)
 $$
-A smooth ReLU-like curve used in GPT/BERT-style transformers.
 
 ## Worked numeric evaluations at $z = -1,\ 0,\ 2$
 
@@ -43,17 +60,10 @@ A smooth ReLU-like curve used in GPT/BERT-style transformers.
 | $0$  | $0.500$ | $0.000$  | $0$ | $0.000$ |
 | $2$  | $0.881$ | $0.964$  | $2$ | $1.954$ |
 
-**Sample calculation** ($\sigma(2)$):
-$$
-\sigma(2) = \frac{1}{1+e^{-2}} = \frac{1}{1+0.135} = \frac{1}{1.135} = 0.881.
-$$
-
 ## Intuition for LLMs
 
-Modern transformers use **GELU** (or variants like SwiGLU) in their
-feed-forward blocks. Without these nonlinearities, an LLM — no matter how many
-layers — would collapse into a single linear map and could not model the rich
-structure of language.
+Modern transformers use GELU/SwiGLU in feed-forward blocks. Proposition 7.1 is
+why those nonlinearities are mathematically necessary.
 
 ---
 

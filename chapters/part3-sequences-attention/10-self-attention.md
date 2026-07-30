@@ -2,47 +2,69 @@
 
 [← Table of Contents](../../README.md)
 
-This is the mechanism that makes transformers work. Read slowly — we compute a
-complete example by hand.
+## Formal definition
 
-## The idea
-
-Each token should be able to **look at** every other token and decide how much
-to pay attention to it. “It” in a sentence should attend to whatever noun it
-refers to. Self-attention computes, for every token, a weighted average of all
-tokens' information, where weights depend on relevance.
-
-## Queries, Keys, Values
-
-From each input embedding $\mathbf{x}$ we produce three vectors via learned
-matrices $\mathbf{W}^Q, \mathbf{W}^K, \mathbf{W}^V$:
-
+For $\mathbf{X}\in\mathbb{R}^{n\times d_{\text{model}}}$,
 $$
-\mathbf{Q} = \mathbf{X}\mathbf{W}^Q,\quad
-\mathbf{K} = \mathbf{X}\mathbf{W}^K,\quad
-\mathbf{V} = \mathbf{X}\mathbf{W}^V.
+\mathbf{Q}=\mathbf{X}\mathbf{W}^Q,\quad
+\mathbf{K}=\mathbf{X}\mathbf{W}^K,\quad
+\mathbf{V}=\mathbf{X}\mathbf{W}^V,
+$$
+and
+$$
+\operatorname{Attn}(\mathbf{X})=
+\operatorname{softmax}\!\left(\frac{\mathbf{Q}\mathbf{K}^\top}{\sqrt{d_k}}\right)\mathbf{V}.
+$$
+Softmax is row-wise.
+
+**Proposition 10.1 (Permutation equivariance).** Let
+$\mathbf{P}\in\mathbb{R}^{n\times n}$ be a permutation matrix and define
+$\mathbf{X}'=\mathbf{P}\mathbf{X}$. Then
+$$
+\operatorname{Attn}(\mathbf{X}')=\mathbf{P}\operatorname{Attn}(\mathbf{X}).
+$$
+So reordering tokens reorders outputs in the same way.
+
+**Proof.** Under permutation,
+$\mathbf{Q}'=\mathbf{P}\mathbf{Q}$,
+$\mathbf{K}'=\mathbf{P}\mathbf{K}$,
+$\mathbf{V}'=\mathbf{P}\mathbf{V}$. Therefore score matrix
+$$
+\mathbf{S}'=\frac{\mathbf{Q}'(\mathbf{K}')^\top}{\sqrt{d_k}}
+=\frac{\mathbf{P}\mathbf{Q}\mathbf{K}^\top\mathbf{P}^\top}{\sqrt{d_k}}
+=\mathbf{P}\mathbf{S}\mathbf{P}^\top.
+$$
+Row-wise softmax commutes with this simultaneous row/column permutation:
+$\operatorname{softmax}(\mathbf{P}\mathbf{S}\mathbf{P}^\top)
+=\mathbf{P}\operatorname{softmax}(\mathbf{S})\mathbf{P}^\top$.
+Hence
+$$
+\operatorname{Attn}(\mathbf{X}')=
+\mathbf{P}\operatorname{softmax}(\mathbf{S})\mathbf{P}^\top\mathbf{P}\mathbf{V}
+=\mathbf{P}\operatorname{Attn}(\mathbf{X}).
+$$
+$\blacksquare$
+
+**Proposition 10.2 (Why scale by $1/\sqrt{d_k}$).** Assume entries of
+$\mathbf{q},\mathbf{k}\in\mathbb{R}^{d_k}$ are i.i.d., mean $0$, variance $1$,
+and independent across vectors. Then
+$$
+\operatorname{Var}(\mathbf{q}\cdot\mathbf{k})=d_k,
+\qquad
+\operatorname{Var}\!\left(\frac{\mathbf{q}\cdot\mathbf{k}}{\sqrt{d_k}}\right)=1.
 $$
 
-- **Query**: what this token is looking for.
-- **Key**: what this token offers.
-- **Value**: the information this token carries.
-
-## Scaled dot-product attention
-
-$$
-\text{Attention}(\mathbf{Q},\mathbf{K},\mathbf{V}) = \text{softmax}\!\left(\frac{\mathbf{Q}\mathbf{K}^\top}{\sqrt{d_k}}\right)\mathbf{V}.
-$$
-
-The dot product $\mathbf{Q}\mathbf{K}^\top$ scores query–key relevance; dividing by
-$\sqrt{d_k}$ keeps scores from getting too large; softmax turns them into
-weights that sum to 1; multiplying by $\mathbf{V}$ produces the weighted output.
+**Proof.** $\mathbf{q}\cdot\mathbf{k}=\sum_{i=1}^{d_k} q_i k_i$.
+Each term has mean $0$ and variance
+$\mathbb{E}[q_i^2]\mathbb{E}[k_i^2]=1$. Independence gives variance additivity,
+so $\operatorname{Var}(\sum_i q_i k_i)=d_k$. Dividing by $\sqrt{d_k}$ divides
+variance by $d_k$, yielding $1$. $\blacksquare$
 
 ---
 
 ## Complete worked example (3 tokens, $d_k = 2$)
 
-Assume we already have $\mathbf{Q}, \mathbf{K}, \mathbf{V}$ for a 3-token
-sequence (to keep the arithmetic clean):
+Assume we already have
 
 $$
 \mathbf{Q} = \begin{bmatrix} 1 & 0 \\ 0 & 1 \\ 1 & 1 \end{bmatrix},\quad
@@ -50,86 +72,39 @@ $$
 \mathbf{V} = \begin{bmatrix} 2 & 0 \\ 0 & 3 \\ 1 & 1 \end{bmatrix}.
 $$
 
-### Step 1 — scores $\mathbf{Q}\mathbf{K}^\top$ (a $3\times 3$ matrix)
-
-Row 1 ($\mathbf{q}_1=[1,0]$) dotted with each key row $[1,0],[1,1],[0,1]$:
-$$
-[1,\ 1,\ 0].
-$$
-Row 2 ($\mathbf{q}_2=[0,1]$): $[0,\ 1,\ 1]$.
-Row 3 ($\mathbf{q}_3=[1,1]$): $[1,\ 2,\ 1]$.
+### Step 1 — scores $\mathbf{Q}\mathbf{K}^\top$
 
 $$
 \mathbf{Q}\mathbf{K}^\top = \begin{bmatrix} 1 & 1 & 0 \\ 0 & 1 & 1 \\ 1 & 2 & 1 \end{bmatrix}.
 $$
 
-### Step 2 — scale by $\sqrt{d_k} = \sqrt{2} \approx 1.414$
+### Step 2 — scale by $\sqrt{2}$
 
 $$
-\frac{1}{1.414}\begin{bmatrix} 1 & 1 & 0 \\ 0 & 1 & 1 \\ 1 & 2 & 1 \end{bmatrix}
-= \begin{bmatrix} 0.707 & 0.707 & 0 \\ 0 & 0.707 & 0.707 \\ 0.707 & 1.414 & 0.707 \end{bmatrix}.
+\begin{bmatrix} 0.707 & 0.707 & 0 \\ 0 & 0.707 & 0.707 \\ 0.707 & 1.414 & 0.707 \end{bmatrix}.
 $$
 
 ### Step 3 — softmax each row
 
-**Row 1** $[0.707, 0.707, 0]$: $e^{0.707}=2.028,\ e^{0.707}=2.028,\ e^{0}=1$, sum $=5.056$.
-$$
-\to [0.401,\ 0.401,\ 0.198].
-$$
-
-**Row 2** $[0, 0.707, 0.707]$: $1, 2.028, 2.028$, sum $=5.056$.
-$$
-\to [0.198,\ 0.401,\ 0.401].
-$$
-
-**Row 3** $[0.707, 1.414, 0.707]$: $2.028, 4.113, 2.028$, sum $=8.169$.
-$$
-\to [0.248,\ 0.503,\ 0.248].
-$$
-
-So the attention weight matrix is
 $$
 \mathbf{A} = \begin{bmatrix} 0.401 & 0.401 & 0.198 \\ 0.198 & 0.401 & 0.401 \\ 0.248 & 0.503 & 0.248 \end{bmatrix}.
 $$
 
 ### Step 4 — multiply by $\mathbf{V}$
 
-Each output row is a weighted sum of value rows $[2,0],[0,3],[1,1]$.
-
-**Output row 1:**
-$$
-0.401[2,0] + 0.401[0,3] + 0.198[1,1] = [0.802+0.198,\ 1.203+0.198] = [1.000,\ 1.401].
-$$
-
-**Output row 2:**
-$$
-0.198[2,0] + 0.401[0,3] + 0.401[1,1] = [0.396+0.401,\ 1.203+0.401] = [0.797,\ 1.604].
-$$
-
-**Output row 3:**
-$$
-0.248[2,0] + 0.503[0,3] + 0.248[1,1] = [0.496+0.248,\ 1.509+0.248] = [0.744,\ 1.757].
-$$
-
 $$
 \boxed{\ \text{Attention output} = \begin{bmatrix} 1.000 & 1.401 \\ 0.797 & 1.604 \\ 0.744 & 1.757 \end{bmatrix}\ }
 $$
 
-Each token now carries a blended representation that mixes in information from
-the tokens it attended to most.
+## Causal masking
 
-## Causal masking (for GPT-style models)
-
-In text generation, a token may only attend to **earlier** tokens. We enforce
-this by setting future scores to $-\infty$ *before* softmax, so their weights
-become 0.
+For decoder-only LLMs, future positions are masked by setting forbidden logits to
+$-\infty$ before softmax.
 
 ## Intuition for LLMs
 
-Self-attention lets every token gather context from the whole sequence in
-parallel — no recurrence needed. This is why transformers train efficiently and
-model long-range dependencies. It is, quite literally, “Attention Is All You
-Need.”
+Self-attention is mathematically permutation-equivariant (Proposition 10.1), so
+position information from [Chapter 12](12-positional-encoding.md) is essential.
 
 ---
 

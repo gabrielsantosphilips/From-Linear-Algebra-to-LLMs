@@ -9,7 +9,7 @@ page handy.
 
 | Symbol | Meaning |
 |---|---|
-| $a, b, x$ | Scalars (single numbers), lowercase italic |
+| $a, b, c, x$ | Scalars (single numbers), lowercase italic |
 | $\mathbf{x}, \mathbf{v}$ | Vectors (bold lowercase) |
 | $\mathbf{W}, \mathbf{A}$ | Matrices (bold uppercase) |
 | $x_i$ | The $i$-th component (entry) of vector $\mathbf{x}$ |
@@ -17,11 +17,41 @@ page handy.
 | $\mathbf{x}^\top$ | Transpose of $\mathbf{x}$ |
 | $\mathbb{R}^n$ | The set of real vectors with $n$ components |
 | $\mathbb{R}^{m\times n}$ | The set of real $m\times n$ matrices |
+| $\mathbb{F}$ | A field (typically $\mathbb{R}$ in this booklet) |
 | $\|\mathbf{x}\|$ | The (L2/Euclidean) norm of $\mathbf{x}$ |
 | $\langle \mathbf{a}, \mathbf{b}\rangle$ or $\mathbf{a}\cdot\mathbf{b}$ | Dot (inner) product |
 | $\nabla f$ | Gradient of a function $f$ |
+| $\nabla^2 f$ | Hessian of a scalar function $f$ |
 | $\sigma(\cdot)$ | Sigmoid or, in context, an activation function |
 | $\text{softmax}(\cdot)$ | The softmax function |
+| $\delta_{ij}$ | Kronecker delta: $1$ if $i=j$, else $0$ |
+
+## Logic and set notation used in proofs
+
+| Symbol | Meaning |
+|---|---|
+| $\forall$ | for all |
+| $\exists$ | there exists |
+| $\Rightarrow$ | implies |
+| $\iff$ | if and only if |
+| $\in$ | is an element of |
+| $\subseteq$ | is a subset of |
+| $\emptyset$ | empty set |
+| $\{x \in S : P(x)\}$ | set-builder notation |
+
+## Formal statement convention
+
+GitHub Markdown has no built-in theorem environments, so we use bold labels:
+
+- **Definition 2.1 (Name).** ...
+- **Lemma 2.2 (Name).** ...
+- **Proposition 2.3 (Name).** ...
+- **Theorem 2.4 (Name).** ...
+- **Corollary 2.5 (Name).** ...
+- **Proof.** ... $\blacksquare$
+
+Numbering is by chapter. For example, items in Chapter 4 are numbered
+$4.1, 4.2, \dots$.
 
 ## Conventions
 

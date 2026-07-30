@@ -4,66 +4,57 @@
 
 ## Counting parameters
 
-Let's estimate the parameter count of a small transformer to build intuition.
-With $d_{\text{model}} = 512$, $N = 6$ blocks, vocabulary $V = 30{,}000$,
-FFN hidden $= 4d = 2048$.
+Let's estimate a small transformer. With $d_{\text{model}} = 512$, $N = 6$
+blocks, vocabulary $V = 30{,}000$, FFN hidden $=4d=2048$:
 
-**Per block:**
-- Attention: 4 matrices ($\mathbf{W}^Q,\mathbf{W}^K,\mathbf{W}^V,\mathbf{W}^O$),
-  each $512\times 512$ $\Rightarrow 4 \times 512^2 = 1{,}048{,}576$.
-- FFN: $512\times 2048$ + $2048\times 512 = 2 \times 1{,}048{,}576 = 2{,}097{,}152$.
+- Per block attention params: $4d_{\text{model}}^2=1{,}048{,}576$.
+- Per block FFN params: $2d_{\text{model}}(4d_{\text{model}})=2{,}097{,}152$.
 - Total per block $\approx 3.15$M.
+- Total blocks: $N\cdot 3.15\text{M}\approx 18.9$M.
+- Embedding matrix: $Vd_{\text{model}}=15.36$M.
+- Grand total: $\approx 34$M parameters.
 
-**6 blocks:** $6 \times 3.15\text{M} \approx 18.9$M.
+## Scaling laws (empirical functional forms)
 
-**Embeddings:** $V \times d = 30{,}000 \times 512 = 15.36$M.
+Define:
+- $N$: parameter count,
+- $D$: number of training tokens,
+- $C$: training compute,
+- $L$: validation loss,
+- $L_\infty$: irreducible loss floor.
 
-**Grand total** $\approx 34$M parameters (ignoring biases/LayerNorm, which are
-small). Real LLMs scale each knob up enormously: GPT-3 has 175 **billion**
-parameters, 96 blocks, $d_{\text{model}}=12{,}288$.
-
-## Scaling laws
-
-Empirically, loss falls **predictably** as a power law in model size $N$,
-dataset size $D$, and compute $C$:
-
+A common empirical model family is
 $$
-L(N) \approx \left(\frac{N_c}{N}\right)^{\alpha_N} + L_\infty,
+L(N,D,C)\approx L_\infty + a_N N^{-\alpha_N} + a_D D^{-\alpha_D} + a_C C^{-\alpha_C},
+$$
+with constants $a_\bullet>0$ and exponents $\alpha_\bullet\in(0,1)$ fit from
+data. Holding two variables fixed yields one-dimensional power laws, e.g.
+$$
+L(N)\approx L_\infty + a_N N^{-\alpha_N}.
 $$
 
-with small exponents (e.g. $\alpha_N \approx 0.076$). More parameters + more
-data + more compute → reliably lower loss. The Chinchilla result refined this:
-for a compute budget, model and data size should grow **together**.
+Compute-optimal training laws are often written as
+$$
+N^\star(C)\propto C^{\beta_N},\qquad D^\star(C)\propto C^{\beta_D},
+$$
+capturing the empirical finding that model size and data should scale together.
 
 ## Emergent abilities
 
-Some capabilities (multi-step arithmetic, in-context learning, chain-of-thought
-reasoning) are near-absent in small models and appear relatively **suddenly**
-past a scale threshold. Whether these are true phase transitions or artifacts
-of metrics is debated — but the practical effect is real: scale unlocks
-qualitatively new behavior.
+Certain benchmark capabilities appear sharply only past scale thresholds. These
+are empirical observations, not proven mathematical phase transitions.
 
 ## Beyond pre-training
 
-Raw next-token models are then **aligned**:
-
-- **Supervised fine-tuning (SFT):** train on curated instruction–response pairs.
-- **RLHF:** a reward model learns human preferences; the LLM is optimized (e.g.
-  with PPO) to maximize that reward — making it helpful, harmless, and honest.
-- **Parameter-efficient fine-tuning (LoRA):** low-rank updates
-  ([Chapter 3](../part1-foundations/03-linear-transformations-svd.md)) adapt a
-  frozen model cheaply.
+- Supervised fine-tuning (SFT)
+- RLHF
+- Parameter-efficient fine-tuning (LoRA; see [Theorem 3.8](../part1-foundations/03-linear-transformations-svd.md))
 
 ## The whole journey
 
-You now have the full chain:
-
-> vectors → matrices → linear layers → nonlinearities → gradient descent →
+> vectors → matrices → linear maps → nonlinearities → gradient descent →
 > embeddings → attention → transformer blocks → next-token training → sampling
 > → scale → an LLM.
-
-Everything an LLM does reduces to the linear algebra, probability, and calculus
-in this booklet — executed billions of times, at enormous scale.
 
 ---
 

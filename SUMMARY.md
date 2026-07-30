@@ -31,3 +31,5 @@
 - [A — Linear Algebra Cheat Sheet](chapters/appendix/A-linear-algebra-cheatsheet.md)
 - [B — Glossary](chapters/appendix/B-glossary.md)
 - [C — Further Reading](chapters/appendix/C-further-reading.md)
+- [D — Theorems & Proofs Index](chapters/appendix/D-theorems-and-proofs.md)
+- [E — Mathematical Prerequisites](chapters/appendix/E-mathematical-prerequisites.md)
