@@ -106,6 +106,12 @@ $$
 
 Loss: $(2.88\cdot 2 - 6)^2 = 0.0576$.
 
+![3D loss surface with gradient descent steps moving toward the minimum.](../../assets/img/loss-surface-gd.svg)
+*Figure: Local gradient direction guides each parameter update.*
+
+![Animated point rolling downhill during gradient descent optimization.](../../assets/anim/gradient-descent.gif)
+*Animation: Iterative updates reduce loss over time.*
+
 ## Intuition for LLMs
 
 Chapter 5 gave the gradients; this chapter adds guarantees that updates

@@ -106,6 +106,12 @@ $$
 \text{Attention output} = \begin{bmatrix} 1.000 & 1.401 \\ 0.797 & 1.604 \\ 0.744 & 1.757 \end{bmatrix}.
 $$
 
+![Heatmap of attention weights for a three-token query-key matrix.](../../assets/img/attention-weight-heatmap.svg)
+*Figure: Attention matrix $\mathbf{A}$ as query-key influence strengths.*
+
+![Animated self-attention showing query-to-key weighting and weighted sum output.](../../assets/anim/self-attention.gif)
+*Animation: Query attends to keys, then forms a weighted value mixture.*
+
 ## Causal masking
 
 For decoder-only LLMs, future positions are masked by setting forbidden logits to

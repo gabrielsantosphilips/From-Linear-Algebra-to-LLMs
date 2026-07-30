@@ -166,6 +166,15 @@ $$
 
 So $\mathbf{H}\succeq 0$, hence convex. $\blacksquare$
 
+![Bar chart of token probabilities under different softmax temperatures.](../../assets/img/softmax-temperature.svg)
+*Figure: Lower temperature sharpens; higher temperature flattens softmax.*
+
+![Cross-entropy loss curve versus probability assigned to the correct class.](../../assets/img/cross-entropy-curve.svg)
+*Figure: Cross-entropy drops quickly as correct-class probability increases.*
+
+![Animated softmax temperature sweep over logits.](../../assets/anim/softmax-temperature.gif)
+*Animation: Temperature controls exploration vs concentration.*
+
 ## Intuition for LLMs
 
 Softmax and cross-entropy appear both in output-token prediction and attention.

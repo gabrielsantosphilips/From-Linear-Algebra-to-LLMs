@@ -11,6 +11,16 @@ pipeline is:
 text → tokenizer → token IDs (integers) → embedding lookup → vectors
 ```
 
+```mermaid
+flowchart LR
+    A[Raw text] --> B[Tokenizer]
+    B --> C[Token IDs]
+    C --> D[Embedding table E]
+    D --> E[Sequence of vectors]
+```
+
+*Diagram: Embedding pipeline from text to continuous vectors.*
+
 ## The embedding matrix
 
 An **embedding matrix** $\mathbf{E}\in\mathbb{R}^{V\times d}$ has one row per

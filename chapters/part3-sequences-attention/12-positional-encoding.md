@@ -80,6 +80,9 @@ $$
 - RoPE
 - ALiBi
 
+![Heatmap of sinusoidal positional encodings across positions and dimensions.](../../assets/img/positional-encoding-heatmap.svg)
+*Figure: Alternating sine/cosine bands encode position at multiple frequencies.*
+
 ## Intuition for LLMs
 
 The rotation identity in Proposition 12.1 is the key reason sinusoidal features

@@ -55,11 +55,31 @@ are empirical observations, not proven mathematical phase transitions.
 - RLHF
 - Parameter-efficient fine-tuning (LoRA; see [Theorem 3.8](../part1-foundations/03-linear-transformations-svd.md))
 
+![Log-log scaling law showing loss decreasing with model size.](../../assets/img/scaling-law-loglog.svg)
+*Figure: Typical power-law trend for loss vs model size.*
+
 ## The whole journey
 
 > vectors → matrices → linear maps → nonlinearities → gradient descent →
 > embeddings → attention → transformer blocks → next-token training → sampling
 > → scale → an LLM.
+
+```mermaid
+flowchart LR
+    V[Vectors] --> M[Matrices]
+    M --> L[Linear maps]
+    L --> N[Nonlinearities]
+    N --> G[Gradient descent]
+    G --> E[Embeddings]
+    E --> A[Attention]
+    A --> T[Transformer blocks]
+    T --> P[Next-token prediction]
+    P --> S[Sampling]
+    S --> C[Scaling]
+    C --> LLM[LLM behavior]
+```
+
+*Diagram: End-to-end conceptual path from linear algebra to LLMs.*
 
 ---
 

@@ -148,6 +148,15 @@ $$
 So the angle is $\theta \approx \arccos(0.894) \approx 26.6^\circ$ — the two
 tokens point in fairly similar directions, i.e. they are "semantically close."
 
+![Two vectors in 2D showing their directions from the origin.](../../assets/img/vectors-2d.svg)
+*Figure: Two vectors as points in direction space.*
+
+![Projection of one vector onto another, illustrating the dot product geometrically.](../../assets/img/vectors-dot-projection.svg)
+*Figure: Dot product as projection length times norm.*
+
+![Angle between two vectors used in cosine similarity.](../../assets/img/vectors-cosine-angle.svg)
+*Figure: Cosine similarity is the angle between embedding vectors.*
+
 ## Intuition for LLMs
 
 Embeddings place words in a high-dimensional space where **direction encodes

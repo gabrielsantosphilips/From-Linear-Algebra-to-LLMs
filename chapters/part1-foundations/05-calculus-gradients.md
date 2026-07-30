@@ -167,6 +167,9 @@ Set $\mathbf{x}=\mathbf{x}_\star$ and use $\nabla f(\mathbf{x}_\star)=0$. $\blac
   $\nabla f(\mathbf{x}_\star)=0$ and $\nabla^2 f(\mathbf{x}_\star)\succ 0$.
 - If $\nabla^2 f(\mathbf{x})\succeq 0$ for all $\mathbf{x}$, then $f$ is convex.
 
+![3D convex loss surface with a marked gradient descent trajectory.](../../assets/img/loss-surface-gd.svg)
+*Figure: Gradient vectors induce a step-by-step descent path on the loss surface.*
+
 ## Intuition for LLMs
 
 Backpropagation is just Theorem 5.5 applied repeatedly. This is the rigorous

@@ -23,6 +23,23 @@ $$
 \text{MultiHead}(\mathbf{X}) = \text{Concat}(\text{head}_1, \dots, \text{head}_h)\,\mathbf{W}^O.
 $$
 
+```mermaid
+flowchart LR
+    X[Input X] --> Q1[Head 1: QKV]
+    X --> Q2[Head 2: QKV]
+    X --> QH[Head h: QKV]
+    Q1 --> H1[head 1]
+    Q2 --> H2[head 2]
+    QH --> HH[head h]
+    H1 --> C[Concat]
+    H2 --> C
+    HH --> C
+    C --> WO[Output projection W^O]
+    WO --> Y[MultiHead(X)]
+```
+
+*Diagram: Parallel heads, concatenation, and output projection.*
+
 ## Dimensions worked out
 
 Suppose $d_{\text{model}} = 512$ and $h = 8$ heads. Then each head works in
