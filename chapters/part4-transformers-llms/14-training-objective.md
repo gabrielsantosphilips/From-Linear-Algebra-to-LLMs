@@ -46,9 +46,7 @@ in the sequence is predicted simultaneously, each conditioned on the real prefix
 ## Tokenization (brief)
 
 Text is split into subword tokens (e.g. Byte-Pair Encoding). “unbelievable”
-might become `un` + `believ` + `able`. This keeps the vocabulary ($V\approx
-30\text{k}–100\text{k}$) manageable while covering any word, including unseen
-ones.
+might become `un` + `believ` + `able`. This keeps the vocabulary ($V\approx 30\text{k}–100\text{k}$) manageable while covering any word, including unseen ones.
 
 ## Intuition for LLMs
 

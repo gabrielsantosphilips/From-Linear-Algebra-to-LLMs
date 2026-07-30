@@ -43,14 +43,17 @@ $$
 $$
 
 Suppose a second head produced
+
 $$
 \text{head}_2 = \begin{bmatrix} 0.5 & 0.2 \\ 0.1 & 0.9 \\ 0.3 & 0.3 \end{bmatrix}.
 $$
 
 Concatenation gives a $3\times 4$ matrix:
+
 $$
 \text{Concat} = \begin{bmatrix} 1.000 & 1.401 & 0.5 & 0.2 \\ 0.797 & 1.604 & 0.1 & 0.9 \\ 0.744 & 1.757 & 0.3 & 0.3 \end{bmatrix},
 $$
+
 which $\mathbf{W}^O \in \mathbb{R}^{4\times d_{\text{model}}}$ then projects to the
 output dimension.
 

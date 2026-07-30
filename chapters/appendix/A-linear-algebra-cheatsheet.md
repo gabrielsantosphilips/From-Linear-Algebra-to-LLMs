@@ -7,10 +7,10 @@
 | Operation | Formula |
 |---|---|
 | Dot product | $\mathbf{a}\cdot\mathbf{b} = \sum_i a_i b_i$ |
-| L2 norm | $\|\mathbf{x}\| = \sqrt{\sum_i x_i^2}$ |
-| L1 norm | $\|\mathbf{x}\|_1 = \sum_i |x_i|$ |
-| Cosine similarity | $\dfrac{\mathbf{a}\cdot\mathbf{b}}{\|\mathbf{a}\|\,\|\mathbf{b}\|}$ |
-| Unit vector | $\hat{\mathbf{x}} = \mathbf{x}/\|\mathbf{x}\|$ |
+| L2 norm | $\lVert\mathbf{x}\rVert = \sqrt{\sum_i x_i^2}$ |
+| L1 norm | $\lVert\mathbf{x}\rVert_1 = \sum_i \lvert x_i\rvert$ |
+| Cosine similarity | $\dfrac{\mathbf{a}\cdot\mathbf{b}}{\lVert\mathbf{a}\rVert\,\lVert\mathbf{b}\rVert}$ |
+| Unit vector | $\hat{\mathbf{x}} = \mathbf{x}/\lVert\mathbf{x}\rVert$ |
 
 ## Matrices
 

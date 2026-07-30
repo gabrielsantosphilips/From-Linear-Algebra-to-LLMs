@@ -7,7 +7,7 @@
 Computers cannot process raw text, so we convert tokens into vectors. The
 pipeline is:
 
-```
+```text
 text → tokenizer → token IDs (integers) → embedding lookup → vectors
 ```
 
@@ -34,13 +34,9 @@ $$
 -0.5 & 0.8 & 0.2 \\
 0.0 & 0.6 & -0.7
 \end{bmatrix}
-\begin{matrix}
-\leftarrow \text{“the” (id 0)} \\
-\leftarrow \text{“cat” (id 1)} \\
-\leftarrow \text{“sat” (id 2)} \\
-\leftarrow \text{“mat” (id 3)}
-\end{matrix}
 $$
+
+Rows correspond to token IDs: 0 = “the”, 1 = “cat”, 2 = “sat”, 3 = “mat”.
 
 The sentence “the cat sat” = token IDs $[0, 1, 2]$ becomes the sequence of
 vectors:
