@@ -18,7 +18,7 @@ page handy.
 | $\mathbb{R}^n$ | The set of real vectors with $n$ components |
 | $\mathbb{R}^{m\times n}$ | The set of real $m\times n$ matrices |
 | $\mathbb{F}$ | A field (typically $\mathbb{R}$ in this booklet) |
-| $\|\mathbf{x}\|$ | The (L2/Euclidean) norm of $\mathbf{x}$ |
+| $\lVert\mathbf{x}\rVert$ | The (L2/Euclidean) norm of $\mathbf{x}$ |
 | $\langle \mathbf{a}, \mathbf{b}\rangle$ or $\mathbf{a}\cdot\mathbf{b}$ | Dot (inner) product |
 | $\nabla f$ | Gradient of a function $f$ |
 | $\nabla^2 f$ | Hessian of a scalar function $f$ |

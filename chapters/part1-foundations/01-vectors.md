@@ -22,6 +22,7 @@ $\mathbb{R}^n$ with componentwise addition/scalar multiplication is the canonica
 example used throughout this booklet.
 
 **Definition 1.2 (Span).** For vectors $\mathbf{v}_1,\dots,\mathbf{v}_k\in V$,
+
 $$
 \operatorname{span}\{\mathbf{v}_1,\dots,\mathbf{v}_k\}=
 \left\{\sum_{i=1}^k a_i\mathbf{v}_i : a_i\in\mathbb{F}\right\}.
@@ -29,6 +30,7 @@ $$
 
 **Definition 1.3 (Linear independence).** $\mathbf{v}_1,\dots,\mathbf{v}_k$ are
 linearly independent if
+
 $$
 \sum_{i=1}^k a_i\mathbf{v}_i=\mathbf{0} \Rightarrow a_1=\cdots=a_k=0.
 $$
@@ -40,6 +42,7 @@ written $\dim V$.
 ## Dot product, norm, and angle
 
 In $\mathbb{R}^n$:
+
 $$
 \mathbf{a}\cdot\mathbf{b}=\sum_{i=1}^n a_i b_i,
 \qquad
@@ -58,44 +61,55 @@ Positive-definiteness: $\mathbf{x}\cdot\mathbf{x}=\sum_i x_i^2\ge 0$, and it is 
 iff each $x_i=0$, i.e. $\mathbf{x}=\mathbf{0}$. $\blacksquare$
 
 **Theorem 1.6 (Cauchy–Schwarz).** For all $\mathbf{a},\mathbf{b}\in\mathbb{R}^n$,
+
 $$
 |\mathbf{a}\cdot\mathbf{b}|\le \|\mathbf{a}\|\,\|\mathbf{b}\|.
 $$
 
 **Proof.** If $\mathbf{b}=\mathbf{0}$ it is trivial. Otherwise consider
 $f(t)=\|\mathbf{a}-t\mathbf{b}\|^2\ge 0$ for all $t\in\mathbb{R}$:
+
 $$
 f(t)=\|\mathbf{a}\|^2-2t(\mathbf{a}\cdot\mathbf{b})+t^2\|\mathbf{b}\|^2.
 $$
+
 A quadratic nonnegative for all $t$ has discriminant $\le 0$:
+
 $$
 (-2\mathbf{a}\cdot\mathbf{b})^2-4\|\mathbf{b}\|^2\|\mathbf{a}\|^2\le 0
 \Rightarrow
 (\mathbf{a}\cdot\mathbf{b})^2\le \|\mathbf{a}\|^2\|\mathbf{b}\|^2.
 $$
+
 Take square roots. $\blacksquare$
 
 **Corollary 1.7 (Triangle inequality).** For all $\mathbf{a},\mathbf{b}\in\mathbb{R}^n$,
+
 $$
 \|\mathbf{a}+\mathbf{b}\|\le \|\mathbf{a}\|+\|\mathbf{b}\|.
 $$
 
 **Proof.** Expand and apply Theorem 1.6:
+
 $$
 \|\mathbf{a}+\mathbf{b}\|^2
 =\|\mathbf{a}\|^2+2\mathbf{a}\cdot\mathbf{b}+\|\mathbf{b}\|^2
 \le \|\mathbf{a}\|^2+2\|\mathbf{a}\|\|\mathbf{b}\|+\|\mathbf{b}\|^2
 =(\|\mathbf{a}\|+\|\mathbf{b}\|)^2.
 $$
+
 Take square roots. $\blacksquare$
 
 **Proposition 1.8 (Dot product and angle).** For nonzero
 $\mathbf{a},\mathbf{b}\in\mathbb{R}^n$, define
+
 $$
 \theta = \arccos\left(\frac{\mathbf{a}\cdot\mathbf{b}}{\|\mathbf{a}\|\,\|\mathbf{b}\|}\right)
 \in[0,\pi].
 $$
+
 Then
+
 $$
 \mathbf{a}\cdot\mathbf{b}=\|\mathbf{a}\|\,\|\mathbf{b}\|\cos\theta.
 $$
@@ -113,17 +127,20 @@ $$
 $$
 
 **Dot product:**
+
 $$
 \mathbf{a}\cdot\mathbf{b} = 2\cdot 3 + 1\cdot 4 = 6 + 4 = 10.
 $$
 
 **Norms:**
+
 $$
 \|\mathbf{a}\| = \sqrt{2^2+1^2} = \sqrt{5} \approx 2.236, \quad
 \|\mathbf{b}\| = \sqrt{3^2+4^2} = \sqrt{25} = 5.
 $$
 
 **Cosine similarity:**
+
 $$
 \cos\theta = \frac{10}{2.236 \times 5} = \frac{10}{11.18} \approx 0.894.
 $$

@@ -5,49 +5,59 @@
 ## Formal definition
 
 For $\mathbf{X}\in\mathbb{R}^{n\times d_{\text{model}}}$,
+
 $$
 \mathbf{Q}=\mathbf{X}\mathbf{W}^Q,\quad
 \mathbf{K}=\mathbf{X}\mathbf{W}^K,\quad
 \mathbf{V}=\mathbf{X}\mathbf{W}^V,
 $$
+
 and
+
 $$
 \operatorname{Attn}(\mathbf{X})=
 \operatorname{softmax}\!\left(\frac{\mathbf{Q}\mathbf{K}^\top}{\sqrt{d_k}}\right)\mathbf{V}.
 $$
+
 Softmax is row-wise.
 
 **Proposition 10.1 (Permutation equivariance).** Let
 $\mathbf{P}\in\mathbb{R}^{n\times n}$ be a permutation matrix and define
 $\mathbf{X}'=\mathbf{P}\mathbf{X}$. Then
+
 $$
 \operatorname{Attn}(\mathbf{X}')=\mathbf{P}\operatorname{Attn}(\mathbf{X}).
 $$
+
 So reordering tokens reorders outputs in the same way.
 
 **Proof.** Under permutation,
 $\mathbf{Q}'=\mathbf{P}\mathbf{Q}$,
 $\mathbf{K}'=\mathbf{P}\mathbf{K}$,
 $\mathbf{V}'=\mathbf{P}\mathbf{V}$. Therefore score matrix
+
 $$
 \mathbf{S}'=\frac{\mathbf{Q}'(\mathbf{K}')^\top}{\sqrt{d_k}}
 =\frac{\mathbf{P}\mathbf{Q}\mathbf{K}^\top\mathbf{P}^\top}{\sqrt{d_k}}
 =\mathbf{P}\mathbf{S}\mathbf{P}^\top.
 $$
+
 Row-wise softmax commutes with this simultaneous row/column permutation:
-$\operatorname{softmax}(\mathbf{P}\mathbf{S}\mathbf{P}^\top)
-=\mathbf{P}\operatorname{softmax}(\mathbf{S})\mathbf{P}^\top$.
+$\operatorname{softmax}(\mathbf{P}\mathbf{S}\mathbf{P}^\top)=\mathbf{P}\operatorname{softmax}(\mathbf{S})\mathbf{P}^\top$.
 Hence
+
 $$
 \operatorname{Attn}(\mathbf{X}')=
 \mathbf{P}\operatorname{softmax}(\mathbf{S})\mathbf{P}^\top\mathbf{P}\mathbf{V}
 =\mathbf{P}\operatorname{Attn}(\mathbf{X}).
 $$
+
 $\blacksquare$
 
 **Proposition 10.2 (Why scale by $1/\sqrt{d_k}$).** Assume entries of
 $\mathbf{q},\mathbf{k}\in\mathbb{R}^{d_k}$ are i.i.d., mean $0$, variance $1$,
 and independent across vectors. Then
+
 $$
 \operatorname{Var}(\mathbf{q}\cdot\mathbf{k})=d_k,
 \qquad
@@ -93,7 +103,7 @@ $$
 ### Step 4 — multiply by $\mathbf{V}$
 
 $$
-\boxed{\ \text{Attention output} = \begin{bmatrix} 1.000 & 1.401 \\ 0.797 & 1.604 \\ 0.744 & 1.757 \end{bmatrix}\ }
+\text{Attention output} = \begin{bmatrix} 1.000 & 1.401 \\ 0.797 & 1.604 \\ 0.744 & 1.757 \end{bmatrix}.
 $$
 
 ## Causal masking

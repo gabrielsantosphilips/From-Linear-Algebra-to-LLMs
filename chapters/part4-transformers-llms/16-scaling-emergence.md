@@ -24,19 +24,24 @@ Define:
 - $L_\infty$: irreducible loss floor.
 
 A common empirical model family is
+
 $$
 L(N,D,C)\approx L_\infty + a_N N^{-\alpha_N} + a_D D^{-\alpha_D} + a_C C^{-\alpha_C},
 $$
+
 with constants $a_\bullet>0$ and exponents $\alpha_\bullet\in(0,1)$ fit from
 data. Holding two variables fixed yields one-dimensional power laws, e.g.
+
 $$
 L(N)\approx L_\infty + a_N N^{-\alpha_N}.
 $$
 
 Compute-optimal training laws are often written as
+
 $$
 N^\star(C)\propto C^{\beta_N},\qquad D^\star(C)\propto C^{\beta_D},
 $$
+
 capturing the empirical finding that model size and data should scale together.
 
 ## Emergent abilities

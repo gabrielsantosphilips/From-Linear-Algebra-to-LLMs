@@ -26,11 +26,13 @@ activation = step function ($f(z)=1$ if $z\ge 0$, else $0$).
 $$
 z = 0.5\cdot 1 + (-1)\cdot 2 + 0.3 = 0.5 - 2 + 0.3 = -1.2.
 $$
+
 $$
 y = f(-1.2) = 0.
 $$
 
 With a sigmoid activation instead (see [Chapter 7](07-activations-nonlinearity.md)):
+
 $$
 y = \sigma(-1.2) = \frac{1}{1+e^{1.2}} = \frac{1}{1+3.32} = 0.231.
 $$

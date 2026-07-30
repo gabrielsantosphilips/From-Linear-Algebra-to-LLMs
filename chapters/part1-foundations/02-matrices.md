@@ -13,21 +13,26 @@ $T_{\mathbf{A}}(\mathbf{x})=\mathbf{A}\mathbf{x}$.
 $\mathbf{A}\in\mathbb{R}^{m\times p}$ and
 $\mathbf{B}\in\mathbb{R}^{p\times n}$, then
 $\mathbf{A}\mathbf{B}\in\mathbb{R}^{m\times n}$ is the unique matrix such that
+
 $$
 T_{\mathbf{A}\mathbf{B}} = T_{\mathbf{A}}\circ T_{\mathbf{B}}.
 $$
+
 Entry-wise,
+
 $$
 (\mathbf{A}\mathbf{B})_{ij}=\sum_{k=1}^p A_{ik}B_{kj}.
 $$
 
 **Theorem 2.3 (Associativity of matrix multiplication).** For conformable
 $\mathbf{A},\mathbf{B},\mathbf{C}$,
+
 $$
 (\mathbf{A}\mathbf{B})\mathbf{C}=\mathbf{A}(\mathbf{B}\mathbf{C}).
 $$
 
 **Proof.** For any $i,j$,
+
 $$
 \begin{aligned}
 ((\mathbf{A}\mathbf{B})\mathbf{C})_{ij}
@@ -37,20 +42,24 @@ $$
 =(\mathbf{A}(\mathbf{B}\mathbf{C}))_{ij}.
 \end{aligned}
 $$
+
 Thus all entries are equal. $\blacksquare$
 
 **Proposition 2.4 (Transpose of a product).**
+
 $$
 (\mathbf{A}\mathbf{B})^\top=\mathbf{B}^\top\mathbf{A}^\top.
 $$
 
 **Proof.**
+
 $$
 ((\mathbf{A}\mathbf{B})^\top)_{ij}=(\mathbf{A}\mathbf{B})_{ji}
 =\sum_k A_{jk}B_{ki}
 =\sum_k (\mathbf{B}^\top)_{ik}(\mathbf{A}^\top)_{kj}
 =(\mathbf{B}^\top\mathbf{A}^\top)_{ij}.
 $$
+
 $\blacksquare$
 
 **Definition 2.5 (Column space, null space, rank).** For
@@ -60,6 +69,7 @@ $\mathbf{A}\in\mathbb{R}^{m\times n}$:
 - $\operatorname{rank}(\mathbf{A})=\dim\operatorname{Col}(\mathbf{A})$.
 
 **Theorem 2.6 (Rank–nullity).** If $\mathbf{A}\in\mathbb{R}^{m\times n}$, then
+
 $$
 \dim\operatorname{Null}(\mathbf{A})+\operatorname{rank}(\mathbf{A})=n.
 $$
@@ -80,9 +90,11 @@ inverse is unique.
 
 **Proof.** Suppose $\mathbf{B}$ and $\mathbf{C}$ both satisfy inverse equations.
 Then
+
 $$
 \mathbf{B}=\mathbf{B}\mathbf{I}=\mathbf{B}(\mathbf{A}\mathbf{C})=(\mathbf{B}\mathbf{A})\mathbf{C}=\mathbf{I}\mathbf{C}=\mathbf{C}.
 $$
+
 So $\mathbf{B}=\mathbf{C}$. $\blacksquare$
 
 ## Worked example ($2\times 3$ times $3\times 2$)
@@ -97,12 +109,15 @@ Element by element:
 $$
 C_{11} = 1\cdot 7 + 2\cdot 9 + 3\cdot 11 = 7+18+33 = 58
 $$
+
 $$
 C_{12} = 1\cdot 8 + 2\cdot 10 + 3\cdot 12 = 8+20+36 = 64
 $$
+
 $$
 C_{21} = 4\cdot 7 + 5\cdot 9 + 6\cdot 11 = 28+45+66 = 139
 $$
+
 $$
 C_{22} = 4\cdot 8 + 5\cdot 10 + 6\cdot 12 = 32+50+72 = 154
 $$
@@ -122,6 +137,7 @@ $$
 ### Worked example
 
 With
+
 $$
 \mathbf{W} = \begin{bmatrix} 1 & -1 \\ 0 & 2 \end{bmatrix},\;
 \mathbf{x} = \begin{bmatrix} 3 \\ 5 \end{bmatrix},\;

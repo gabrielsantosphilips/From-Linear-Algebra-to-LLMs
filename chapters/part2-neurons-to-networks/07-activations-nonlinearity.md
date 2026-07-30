@@ -7,9 +7,11 @@
 **Proposition 7.1 (Composition of affine maps is affine).** If
 $f(\mathbf{x})=\mathbf{A}\mathbf{x}+\mathbf{a}$ and
 $g(\mathbf{x})=\mathbf{B}\mathbf{x}+\mathbf{b}$, then
+
 $$
 (g\circ f)(\mathbf{x})=(\mathbf{B}\mathbf{A})\mathbf{x}+(\mathbf{B}\mathbf{a}+\mathbf{b}),
 $$
+
 which is affine.
 
 **Proof.** Direct substitution:
@@ -23,9 +25,11 @@ map.
 $\sigma$ be a non-polynomial, continuous activation (e.g. sigmoid). For any
 continuous function $f$ on a compact set $K\subset\mathbb{R}^n$ and any
 $\varepsilon>0$, there exists a one-hidden-layer network
+
 $$
 N(\mathbf{x})=\sum_{j=1}^m \alpha_j\,\sigma(\mathbf{w}_j^\top\mathbf{x}+b_j)
 $$
+
 with
 $\sup_{\mathbf{x}\in K}|N(\mathbf{x})-f(\mathbf{x})|<\varepsilon$.
 (Proof omitted; see Cybenko 1989 / Hornik 1991.)
@@ -33,21 +37,25 @@ $\sup_{\mathbf{x}\in K}|N(\mathbf{x})-f(\mathbf{x})|<\varepsilon$.
 ## The main activation functions
 
 ### Sigmoid
+
 $$
 \sigma(z) = \frac{1}{1+e^{-z}} \in (0,1)
 $$
 
 ### Tanh
+
 $$
 \tanh(z) = \frac{e^{z}-e^{-z}}{e^{z}+e^{-z}} \in (-1,1)
 $$
 
 ### ReLU (Rectified Linear Unit)
+
 $$
 \text{ReLU}(z) = \max(0, z)
 $$
 
 ### GELU (Gaussian Error Linear Unit)
+
 $$
 \text{GELU}(z) = z\,\Phi(z) \approx 0.5\,z\left(1+\tanh\!\big[\sqrt{2/\pi}(z+0.044715 z^3)\big]\right)
 $$
