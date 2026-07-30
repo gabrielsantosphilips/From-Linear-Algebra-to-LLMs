@@ -2,24 +2,90 @@
 
 [← Table of Contents](../../README.md)
 
-## Definition
+## Formal definitions
 
-A **matrix** is a rectangular grid of numbers with $m$ rows and $n$ columns,
-$\mathbf{W}\in\mathbb{R}^{m\times n}$. In neural networks, matrices are the
-**learned parameters (weights)** that transform vectors.
+**Definition 2.1 (Matrix as a linear map).** A matrix
+$\mathbf{A}\in\mathbb{R}^{m\times n}$ defines a linear map
+$T_{\mathbf{A}}:\mathbb{R}^n\to\mathbb{R}^m$ by
+$T_{\mathbf{A}}(\mathbf{x})=\mathbf{A}\mathbf{x}$.
 
-## Matrix multiplication
-
-If $\mathbf{A}\in\mathbb{R}^{m\times p}$ and $\mathbf{B}\in\mathbb{R}^{p\times n}$,
-their product $\mathbf{C}=\mathbf{A}\mathbf{B}\in\mathbb{R}^{m\times n}$ has entries
-
+**Definition 2.2 (Matrix multiplication as composition).** If
+$\mathbf{A}\in\mathbb{R}^{m\times p}$ and
+$\mathbf{B}\in\mathbb{R}^{p\times n}$, then
+$\mathbf{A}\mathbf{B}\in\mathbb{R}^{m\times n}$ is the unique matrix such that
 $$
-C_{ij} = \sum_{k=1}^{p} A_{ik} B_{kj}.
+T_{\mathbf{A}\mathbf{B}} = T_{\mathbf{A}}\circ T_{\mathbf{B}}.
+$$
+Entry-wise,
+$$
+(\mathbf{A}\mathbf{B})_{ij}=\sum_{k=1}^p A_{ik}B_{kj}.
 $$
 
-The inner dimensions must match ($p=p$).
+**Theorem 2.3 (Associativity of matrix multiplication).** For conformable
+$\mathbf{A},\mathbf{B},\mathbf{C}$,
+$$
+(\mathbf{A}\mathbf{B})\mathbf{C}=\mathbf{A}(\mathbf{B}\mathbf{C}).
+$$
 
-### Worked example ($2\times 3$ times $3\times 2$)
+**Proof.** For any $i,j$,
+$$
+\begin{aligned}
+((\mathbf{A}\mathbf{B})\mathbf{C})_{ij}
+&=\sum_{\ell}(\mathbf{A}\mathbf{B})_{i\ell}C_{\ell j}
+=\sum_{\ell}\left(\sum_k A_{ik}B_{k\ell}\right)C_{\ell j} \\
+&=\sum_k A_{ik}\left(\sum_{\ell}B_{k\ell}C_{\ell j}\right)
+=(\mathbf{A}(\mathbf{B}\mathbf{C}))_{ij}.
+\end{aligned}
+$$
+Thus all entries are equal. $\blacksquare$
+
+**Proposition 2.4 (Transpose of a product).**
+$$
+(\mathbf{A}\mathbf{B})^\top=\mathbf{B}^\top\mathbf{A}^\top.
+$$
+
+**Proof.**
+$$
+((\mathbf{A}\mathbf{B})^\top)_{ij}=(\mathbf{A}\mathbf{B})_{ji}
+=\sum_k A_{jk}B_{ki}
+=\sum_k (\mathbf{B}^\top)_{ik}(\mathbf{A}^\top)_{kj}
+=(\mathbf{B}^\top\mathbf{A}^\top)_{ij}.
+$$
+$\blacksquare$
+
+**Definition 2.5 (Column space, null space, rank).** For
+$\mathbf{A}\in\mathbb{R}^{m\times n}$:
+- $\operatorname{Col}(\mathbf{A})=\{\mathbf{A}\mathbf{x}:\mathbf{x}\in\mathbb{R}^n\}\subseteq\mathbb{R}^m$.
+- $\operatorname{Null}(\mathbf{A})=\{\mathbf{x}\in\mathbb{R}^n:\mathbf{A}\mathbf{x}=\mathbf{0}\}$.
+- $\operatorname{rank}(\mathbf{A})=\dim\operatorname{Col}(\mathbf{A})$.
+
+**Theorem 2.6 (Rank–nullity).** If $\mathbf{A}\in\mathbb{R}^{m\times n}$, then
+$$
+\dim\operatorname{Null}(\mathbf{A})+\operatorname{rank}(\mathbf{A})=n.
+$$
+
+**Proof sketch.** Row-reduce $\mathbf{A}$ to RREF. Let $r$ be the number of pivot
+columns. Then $r=\operatorname{rank}(\mathbf{A})$. There are $n-r$ free variables
+in solutions of $\mathbf{A}\mathbf{x}=\mathbf{0}$, producing a basis of
+$\operatorname{Null}(\mathbf{A})$ with $n-r$ vectors. Hence
+$\dim\operatorname{Null}(\mathbf{A})=n-r$, so the sum is $n$. $\blacksquare$
+
+**Definition 2.7 (Invertibility).** A square matrix
+$\mathbf{A}\in\mathbb{R}^{n\times n}$ is invertible if there exists
+$\mathbf{B}$ such that
+$\mathbf{A}\mathbf{B}=\mathbf{B}\mathbf{A}=\mathbf{I}$.
+
+**Proposition 2.8 (Uniqueness of inverse).** If $\mathbf{A}$ is invertible, its
+inverse is unique.
+
+**Proof.** Suppose $\mathbf{B}$ and $\mathbf{C}$ both satisfy inverse equations.
+Then
+$$
+\mathbf{B}=\mathbf{B}\mathbf{I}=\mathbf{B}(\mathbf{A}\mathbf{C})=(\mathbf{B}\mathbf{A})\mathbf{C}=\mathbf{I}\mathbf{C}=\mathbf{C}.
+$$
+So $\mathbf{B}=\mathbf{C}$. $\blacksquare$
+
+## Worked example ($2\times 3$ times $3\times 2$)
 
 $$
 \mathbf{A} = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}, \qquad
@@ -44,13 +110,6 @@ $$
 $$
 \mathbf{C} = \begin{bmatrix} 58 & 64 \\ 139 & 154 \end{bmatrix}.
 $$
-
-## Other operations
-
-- **Transpose:** $(\mathbf{A}^\top)_{ij} = A_{ji}$ (flip across the diagonal).
-- **Identity** $\mathbf{I}$: ones on the diagonal, zeros elsewhere; $\mathbf{I}\mathbf{x}=\mathbf{x}$.
-- **Inverse** $\mathbf{A}^{-1}$: satisfies $\mathbf{A}\mathbf{A}^{-1}=\mathbf{I}$ (only for square, full-rank matrices).
-- **Rank:** number of linearly independent rows/columns — how much "information" the matrix carries.
 
 ## The linear layer
 
@@ -77,10 +136,9 @@ $$
 
 ## Intuition for LLMs
 
-Every transformation inside a transformer — projecting embeddings into
-queries/keys/values, the feed-forward layers, the final vocabulary projection —
-is matrix multiplication. Understanding $\mathbf{y}=\mathbf{W}\mathbf{x}+\mathbf{b}$
-means you understand ~80% of the arithmetic in an LLM.
+Every transformation inside a transformer is matrix composition. Theorems 2.3
+and 2.4 justify matrix reordering/transposition identities used constantly in
+attention and backprop.
 
 ---
 

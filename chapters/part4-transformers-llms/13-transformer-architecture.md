@@ -9,79 +9,82 @@ We now assemble everything from Parts I–III into the full transformer.
 ```
          token IDs
             ↓
-     [ Embedding lookup ]  (Ch. 9)
+     [ Embedding lookup ]
             +
-     [ Positional encoding ]  (Ch. 12)
+     [ Positional encoding ]
             ↓
   ┌──────── Transformer block (× N) ──────┐
-  │   Multi-Head Self-Attention (Ch. 10–11)  │
-  │   + residual, LayerNorm                  │
-  │   Feed-Forward Network                   │
-  │   + residual, LayerNorm                  │
+  │   Multi-Head Self-Attention            │
+  │   + residual, LayerNorm                │
+  │   Feed-Forward Network                 │
+  │   + residual, LayerNorm                │
   └────────────────────────────────┘
             ↓
      [ Final LayerNorm ]
             ↓
      [ Linear → vocabulary logits ]
             ↓
-     [ softmax → next-token probs ]  (Ch. 4)
+     [ softmax → next-token probs ]
 ```
-
-## Residual connections
-
-Each sub-layer adds its input back to its output:
-
-$$
-\mathbf{x} \leftarrow \mathbf{x} + \text{SubLayer}(\mathbf{x}).
-$$
-
-This creates a “gradient highway” so very deep stacks (dozens of blocks) still
-train (gradients don't vanish — recall [Chapter 5](../part1-foundations/05-calculus-gradients.md)).
 
 ## Layer normalization
 
-Normalizes a vector to zero mean and unit variance, then rescales:
-
+**Definition 13.1 (LayerNorm).** For
+$\mathbf{x}=(x_1,\dots,x_d)\in\mathbb{R}^d$,
 $$
-\text{LayerNorm}(\mathbf{x}) = \gamma\,\frac{\mathbf{x}-\mu}{\sqrt{\sigma^2 + \epsilon}} + \beta,
+\mu(\mathbf{x})=\frac{1}{d}\sum_{i=1}^d x_i,
+\qquad
+\sigma^2(\mathbf{x})=\frac{1}{d}\sum_{i=1}^d (x_i-\mu)^2,
+$$
+$$
+\operatorname{LN}(\mathbf{x})_i=\gamma_i\frac{x_i-\mu(\mathbf{x})}{\sqrt{\sigma^2(\mathbf{x})+\epsilon}}+\beta_i.
 $$
 
-where $\mu,\sigma^2$ are the mean/variance across features, and
-$\gamma,\beta$ are learned.
+**Proposition 13.2 (Shift/scale invariance of normalized core).** Define
+$N(\mathbf{x})=(\mathbf{x}-\mu(\mathbf{x})\mathbf{1})/\sigma(\mathbf{x})$ for
+$\sigma(\mathbf{x})>0$. For any $a>0,b\in\mathbb{R}$,
+$$
+N(a\mathbf{x}+b\mathbf{1})=N(\mathbf{x}).
+$$
+
+**Proof.** $\mu(a\mathbf{x}+b\mathbf{1})=a\mu(\mathbf{x})+b$ and
+$\sigma(a\mathbf{x}+b\mathbf{1})=a\sigma(\mathbf{x})$ for $a>0$, so
+$$
+\frac{a\mathbf{x}+b\mathbf{1}-(a\mu+b)\mathbf{1}}{a\sigma}=\frac{\mathbf{x}-\mu\mathbf{1}}{\sigma}.
+$$
+$\blacksquare$
 
 ### Worked example
 
-$\mathbf{x} = [2, 4, 6]$. Mean $\mu = 4$. Variance
-$\sigma^2 = \frac{(2-4)^2+(4-4)^2+(6-4)^2}{3} = \frac{4+0+4}{3} = 2.667$,
-so $\sigma = 1.633$. With $\epsilon\approx 0$, $\gamma=1,\beta=0$:
+$\mathbf{x}=[2,4,6]$. Mean $\mu=4$, variance $\sigma^2=8/3$, standard deviation
+$\sigma\approx1.633$:
+$$
+\hat{\mathbf{x}}=[-1.225,0,1.225].
+$$
 
+## Residual connections and gradient flow
+
+A residual block is
 $$
-\hat{\mathbf{x}} = \left[\tfrac{2-4}{1.633},\ \tfrac{4-4}{1.633},\ \tfrac{6-4}{1.633}\right] = [-1.225,\ 0,\ 1.225].
+F(\mathbf{x})=\mathbf{x}+G(\mathbf{x}).
 $$
+Its Jacobian is
+$$
+J_F(\mathbf{x})=\mathbf{I}+J_G(\mathbf{x}).
+$$
+So gradients backpropagate through an identity path even when $J_G$ is small,
+mitigating vanishing gradients.
 
 ## Feed-forward network (FFN)
-
-Applied to each position independently — two linear layers with a nonlinearity
-(GELU, [Chapter 7](../part2-neurons-to-networks/07-activations-nonlinearity.md)):
 
 $$
 \text{FFN}(\mathbf{x}) = \mathbf{W}_2\,\text{GELU}(\mathbf{W}_1\mathbf{x} + \mathbf{b}_1) + \mathbf{b}_2.
 $$
 
-Typically the hidden size is $4\times d_{\text{model}}$ (e.g. $512 \to 2048 \to 512$).
-
-## Encoder vs. decoder-only
-
-- **Encoder-only** (BERT): bidirectional attention; good for understanding/classification.
-- **Decoder-only** (GPT): causal (masked) attention; generates text left-to-right. **This is what most LLMs are.**
-- **Encoder–decoder** (T5, original Transformer): translation-style tasks.
-
 ## Intuition for LLMs
 
-A modern LLM is just this block repeated $N$ times (GPT-3: 96 blocks), with
-millions of tokens flowing through. Attention mixes information *across*
-positions; the FFN processes each position; residual + LayerNorm keep it
-trainable. Simple parts, stacked deep, at massive scale.
+LayerNorm stabilizes statistics; residuals preserve trainable gradient flow.
+Together they make deep transformer stacks practical.
 
 ---
 

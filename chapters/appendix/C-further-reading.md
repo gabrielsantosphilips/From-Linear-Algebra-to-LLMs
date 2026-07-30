@@ -46,4 +46,4 @@
 
 ---
 
-[← Glossary](B-glossary.md) · [Back to Table of Contents](../../README.md)
+[← Glossary](B-glossary.md) · [Next: Appendix D →](D-theorems-and-proofs.md) · [Back to Table of Contents](../../README.md)

@@ -2,7 +2,8 @@
 
 > A self-contained mathematical booklet that builds up, step by step, from
 > vectors and matrices to the inner workings of modern Large Language Models
-> (LLMs). Every concept is followed by a **concrete numeric worked example**.
+> (LLMs), now with formal **definitions, theorems, lemmas, propositions, and
+> proofs** alongside worked numeric examples.
 
 ## Who is this for?
 
@@ -16,7 +17,7 @@ start and build everything else from there.
 Each chapter follows the same rhythm:
 
 1. **Definition** — what the object/operation is.
-2. **Derivation** — the mathematics, kept as simple as possible but no simpler.
+2. **Derivation** — the mathematics, now including formal statements/proofs.
 3. **Worked example** — real numbers, arithmetic shown step by step.
 4. **Intuition** — why it matters for LLMs.
 
@@ -60,6 +61,8 @@ Read in order the first time — each chapter builds on the previous ones.
 - [A — Linear Algebra Cheat Sheet](chapters/appendix/A-linear-algebra-cheatsheet.md)
 - [B — Glossary](chapters/appendix/B-glossary.md)
 - [C — Further Reading](chapters/appendix/C-further-reading.md)
+- [D — Theorems & Proofs Index](chapters/appendix/D-theorems-and-proofs.md)
+- [E — Mathematical Prerequisites](chapters/appendix/E-mathematical-prerequisites.md)
 
 ---
 

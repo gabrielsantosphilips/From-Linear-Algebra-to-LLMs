@@ -2,28 +2,68 @@
 
 [← Table of Contents](../../README.md)
 
-## Why probability?
+## Formal foundations
 
-An LLM does not output a single word — it outputs a **probability distribution**
-over the entire vocabulary. Two tools make this possible: the **softmax**
-function (to build distributions) and **cross-entropy** (to train them).
+**Definition 4.1 (Probability space).** A probability space is a triple
+$(\Omega,\mathcal{F},\mathbb{P})$ where:
+- $\Omega$ is the sample space,
+- $\mathcal{F}\subseteq 2^\Omega$ is a $\sigma$-algebra of events,
+- $\mathbb{P}:\mathcal{F}\to[0,1]$ satisfies Kolmogorov axioms:
+  1. $\mathbb{P}(A)\ge0$,
+  2. $\mathbb{P}(\Omega)=1$,
+  3. For pairwise disjoint $A_i$, $\mathbb{P}(\cup_i A_i)=\sum_i\mathbb{P}(A_i)$.
 
-## Basics
+**Definition 4.2 (Random variable, expectation, variance).** A random variable is
+a measurable function $X: \Omega\to\mathbb{R}$. Its expectation is
+$\mathbb{E}[X]$ (sum/integral form as appropriate), and variance is
+$\operatorname{Var}(X)=\mathbb{E}[(X-\mathbb{E}X)^2]$.
 
-- A **distribution** over outcomes assigns probabilities $p_i \ge 0$ with $\sum_i p_i = 1$.
-- **Expectation:** $\mathbb{E}[X] = \sum_i p_i x_i$.
+## Softmax and its properties
 
-## The softmax function
-
-Given a vector of raw scores (**logits**) $\mathbf{z}\in\mathbb{R}^n$, softmax
-turns them into a probability distribution:
-
+For logits $\mathbf{z}\in\mathbb{R}^n$, define
 $$
-\text{softmax}(\mathbf{z})_i = \frac{e^{z_i}}{\sum_{j=1}^{n} e^{z_j}}.
+p_i=\text{softmax}(\mathbf{z})_i=\frac{e^{z_i}}{\sum_{j=1}^n e^{z_j}}.
 $$
 
-Larger logits get exponentially more probability, but everything stays positive
-and sums to 1.
+**Proposition 4.3 (Softmax gives a probability distribution).**
+$p_i>0$ for all $i$, and $\sum_i p_i=1$.
+
+**Proof.** Exponentials are positive, so $p_i>0$. Also
+$$
+\sum_i p_i=\frac{\sum_i e^{z_i}}{\sum_j e^{z_j}}=1.
+$$
+$\blacksquare$
+
+**Proposition 4.4 (Shift invariance).** For any $c\in\mathbb{R}$,
+$$
+\text{softmax}(\mathbf{z}+c\mathbf{1})=\text{softmax}(\mathbf{z}).
+$$
+
+**Proof.**
+$$
+\frac{e^{z_i+c}}{\sum_j e^{z_j+c}}=
+\frac{e^c e^{z_i}}{e^c\sum_j e^{z_j}}=
+\frac{e^{z_i}}{\sum_j e^{z_j}}.
+$$
+$\blacksquare$
+
+**Theorem 4.5 (Softmax Jacobian).**
+$$
+\frac{\partial p_i}{\partial z_j}=p_i(\delta_{ij}-p_j).
+$$
+
+**Proof.** Let $S=\sum_k e^{z_k}$, so $p_i=e^{z_i}/S$.
+If $i=j$:
+$$
+\frac{\partial p_i}{\partial z_i}=
+\frac{e^{z_i}S-e^{z_i}e^{z_i}}{S^2}=p_i(1-p_i).
+$$
+If $i\neq j$:
+$$
+\frac{\partial p_i}{\partial z_j}=
+\frac{0\cdot S-e^{z_i}e^{z_j}}{S^2}=-p_i p_j.
+$$
+Both cases unify as $p_i(\delta_{ij}-p_j)$. $\blacksquare$
 
 ### Worked example
 
@@ -39,46 +79,72 @@ $$
 \text{softmax} = \left[\tfrac{7.389}{11.212},\ \tfrac{2.718}{11.212},\ \tfrac{1.105}{11.212}\right] = [0.659,\ 0.242,\ 0.099].
 $$
 
-They sum to $1.0$. The model would predict the first token with 65.9% probability.
+## Entropy, cross-entropy, KL divergence
 
-## Cross-entropy loss
-
-To train, we compare the predicted distribution $\mathbf{p}$ against the true
-(one-hot) label $\mathbf{y}$:
-
+**Definition 4.6 (Entropy).** For a discrete distribution $p$,
 $$
-H(\mathbf{y},\mathbf{p}) = -\sum_{i} y_i \log p_i.
+H(p)=-\sum_i p_i\log p_i.
 $$
 
-For a one-hot label at the correct class $c$, this simplifies to
-$-\log p_c$.
-
-### Worked example
-
-If the correct token was class 1 (probability $0.659$ above):
-
+**Definition 4.7 (Cross-entropy).**
 $$
-\text{loss} = -\log(0.659) = 0.417.
+H(q,p)=-\sum_i q_i\log p_i.
 $$
 
-If the model had instead assigned it only $0.099$:
-
+**Definition 4.8 (KL divergence).**
 $$
-\text{loss} = -\log(0.099) = 2.313.
+\operatorname{KL}(q\|p)=\sum_i q_i\log\frac{q_i}{p_i}.
 $$
 
-Being confident **and correct** yields low loss; being wrong is punished heavily.
+**Theorem 4.9 (Gibbs' inequality).**
+$$
+\operatorname{KL}(q\|p)\ge 0,
+$$
+with equality iff $q=p$ (on support of $q$).
 
-## Maximum likelihood
+**Proof.** Since $\log$ is concave, $-\log$ is convex. By Jensen with random
+variable $Y=p_i/q_i$ under weights $q_i$,
+$$
+\sum_i q_i\left(-\log\frac{p_i}{q_i}\right)
+\ge -\log\left(\sum_i q_i\frac{p_i}{q_i}\right)
+=-\log\left(\sum_i p_i\right)= -\log 1 = 0.
+$$
+Left side is $\operatorname{KL}(q\|p)$. Equality condition is the Jensen equality
+case, equivalent to $p_i/q_i$ constant on support of $q$, giving $p=q$. $\blacksquare$
 
-Training an LLM = maximizing the likelihood of the observed text = minimizing
-the average cross-entropy (equivalently, **perplexity** $= e^{\text{loss}}$).
+**Corollary 4.10 (Cross-entropy decomposition).**
+$$
+H(q,p)=H(q)+\operatorname{KL}(q\|p)\ge H(q).
+$$
+
+**Proof.** Rearrange Definition 4.8. Then apply Theorem 4.9. $\blacksquare$
+
+## Cross-entropy and maximum likelihood
+
+For one-hot label $q=\mathbf{e}_c$, cross-entropy is $-\log p_c$. Over a dataset,
+minimizing average cross-entropy is equivalent to maximizing
+$\sum_t \log p_\theta(y_t\mid x_t)$, i.e. maximum likelihood.
+
+**Proposition 4.11 (Convexity in logits for fixed target distribution).**
+For fixed $q$, the function
+$$
+\ell(\mathbf{z})=-\sum_i q_i z_i + \log\sum_j e^{z_j}
+$$
+is convex in $\mathbf{z}$.
+
+**Proof sketch.** Its gradient is $\nabla\ell=\text{softmax}(\mathbf{z})-q$. Its
+Hessian is the softmax Jacobian matrix
+$\mathbf{H}=\operatorname{diag}(p)-pp^\top$. For any $\mathbf{v}$,
+$$
+\mathbf{v}^\top\mathbf{H}\mathbf{v}=\sum_i p_i v_i^2-\left(\sum_i p_i v_i\right)^2
+=\operatorname{Var}_{i\sim p}(v_i)\ge0.
+$$
+So $\mathbf{H}\succeq 0$, hence convex. $\blacksquare$
 
 ## Intuition for LLMs
 
-Softmax is the *last step* of the model (over the vocabulary) **and** the core
-of attention weights. Cross-entropy is the training signal that shapes every
-parameter. These two functions appear again in
+Softmax and cross-entropy appear both in output-token prediction and attention.
+The precise gradient formula in Theorem 4.5 is reused directly in
 [Chapter 14](../part4-transformers-llms/14-training-objective.md).
 
 ---
