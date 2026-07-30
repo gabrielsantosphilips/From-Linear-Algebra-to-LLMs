@@ -24,7 +24,7 @@ This appendix compiles formal statements introduced throughout the booklet.
 - **Theorem 2.3.** Associativity of matrix multiplication. ([Chapter 2](../part1-foundations/02-matrices.md))
 - **Proposition 2.4.** $(\mathbf{A}\mathbf{B})^\top=\mathbf{B}^\top\mathbf{A}^\top$. ([Chapter 2](../part1-foundations/02-matrices.md))
 - **Definition 2.5.** Column space, null space, rank. ([Chapter 2](../part1-foundations/02-matrices.md))
-- **Theorem 2.6 (Rank–nullity).** $\dim\operatorname{Null}(\mathbf{A})+\operatorname{rank}(\mathbf{A})=n$. ([Chapter 2](../part1-foundations/02-matrices.md))
+- **Theorem 2.6 (Rank–nullity).** $\dim\mathrm{Null}(\mathbf{A})+\mathrm{rank}(\mathbf{A})=n$. ([Chapter 2](../part1-foundations/02-matrices.md))
 - **Definition 2.7.** Invertibility. ([Chapter 2](../part1-foundations/02-matrices.md))
 - **Proposition 2.8.** Inverse is unique. ([Chapter 2](../part1-foundations/02-matrices.md))
 
@@ -50,8 +50,8 @@ This appendix compiles formal statements introduced throughout the booklet.
 - **Proposition 4.4.** Softmax shift invariance. ([Chapter 4](../part1-foundations/04-probability-statistics.md))
 - **Theorem 4.5.** Softmax Jacobian formula. ([Chapter 4](../part1-foundations/04-probability-statistics.md))
 - **Definitions 4.6–4.8.** Entropy, cross-entropy, KL divergence. ([Chapter 4](../part1-foundations/04-probability-statistics.md))
-- **Theorem 4.9 (Gibbs' inequality).** $\operatorname{KL}(q\|p)\ge0$. ([Chapter 4](../part1-foundations/04-probability-statistics.md))
-- **Corollary 4.10.** $H(q,p)=H(q)+\operatorname{KL}(q\|p)$. ([Chapter 4](../part1-foundations/04-probability-statistics.md))
+- **Theorem 4.9 (Gibbs' inequality).** $\mathrm{KL}(q\|p)\ge0$. ([Chapter 4](../part1-foundations/04-probability-statistics.md))
+- **Corollary 4.10.** $H(q,p)=H(q)+\mathrm{KL}(q\|p)$. ([Chapter 4](../part1-foundations/04-probability-statistics.md))
 - **Proposition 4.11.** Cross-entropy in logits is convex (fixed target). ([Chapter 4](../part1-foundations/04-probability-statistics.md))
 
 ### Chapter 5 — Calculus/gradients

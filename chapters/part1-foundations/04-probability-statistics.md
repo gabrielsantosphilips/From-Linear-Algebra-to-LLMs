@@ -16,7 +16,7 @@ $(\Omega,\mathcal{F},\mathbb{P})$ where:
 **Definition 4.2 (Random variable, expectation, variance).** A random variable is
 a measurable function $X: \Omega\to\mathbb{R}$. Its expectation is
 $\mathbb{E}[X]$ (sum/integral form as appropriate), and variance is
-$\operatorname{Var}(X)=\mathbb{E}[(X-\mathbb{E}X)^2]$.
+$\mathrm{Var}(X)=\mathbb{E}[(X-\mathbb{E}X)^2]$.
 
 ## Softmax and its properties
 
@@ -109,13 +109,13 @@ $$
 **Definition 4.8 (KL divergence).**
 
 $$
-\operatorname{KL}(q\|p)=\sum_i q_i\log\frac{q_i}{p_i}.
+\mathrm{KL}(q\|p)=\sum_i q_i\log\frac{q_i}{p_i}.
 $$
 
 **Theorem 4.9 (Gibbs' inequality).**
 
 $$
-\operatorname{KL}(q\|p)\ge 0,
+\mathrm{KL}(q\|p)\ge 0,
 $$
 
 with equality iff $q=p$ (on support of $q$).
@@ -129,13 +129,13 @@ $$
 =-\log\left(\sum_i p_i\right)= -\log 1 = 0.
 $$
 
-Left side is $\operatorname{KL}(q\|p)$. Equality condition is the Jensen equality
+Left side is $\mathrm{KL}(q\|p)$. Equality condition is the Jensen equality
 case, equivalent to $p_i/q_i$ constant on support of $q$, giving $p=q$. $\blacksquare$
 
 **Corollary 4.10 (Cross-entropy decomposition).**
 
 $$
-H(q,p)=H(q)+\operatorname{KL}(q\|p)\ge H(q).
+H(q,p)=H(q)+\mathrm{KL}(q\|p)\ge H(q).
 $$
 
 **Proof.** Rearrange Definition 4.8. Then apply Theorem 4.9. $\blacksquare$
@@ -157,11 +157,11 @@ is convex in $\mathbf{z}$.
 
 **Proof sketch.** Its gradient is $\nabla\ell=\text{softmax}(\mathbf{z})-q$. Its
 Hessian is the softmax Jacobian matrix
-$\mathbf{H}=\operatorname{diag}(p)-pp^\top$. For any $\mathbf{v}$,
+$\mathbf{H}=\mathrm{diag}(p)-pp^\top$. For any $\mathbf{v}$,
 
 $$
 \mathbf{v}^\top\mathbf{H}\mathbf{v}=\sum_i p_i v_i^2-\left(\sum_i p_i v_i\right)^2
-=\operatorname{Var}_{i\sim p}(v_i)\ge0.
+=\mathrm{Var}_{i\sim p}(v_i)\ge0.
 $$
 
 So $\mathbf{H}\succeq 0$, hence convex. $\blacksquare$
